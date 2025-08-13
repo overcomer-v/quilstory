@@ -37,9 +37,9 @@ export function Entries({ listtype = "journals" }) {
     return (
       <button
         onClick={onClick}
-        className={`px-4 h-10 ${
+        className={`md:px-5 md:h-10 px-5 h-10 text-sm ${
           type === idType ? "bg-blue-600 text-white" : "border-2 border-neutral-300"
-        } rounded-xl`}
+        } rounded-lg`}
       >
         {text}
       </button>

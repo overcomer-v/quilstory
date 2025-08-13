@@ -33,7 +33,7 @@ export function Header({ setShowNav }) {
 
   function SmallScreensHeader({ setShowNav }) {
     return (
-      <header className="flex justify-between items-center py-5 mb-4 text-lg">
+      <header className="flex border-b-2 justify-between items-center py-4 mb-8 text-lg">
         <i
           className="fa fa-bars"
           onClick={() => {

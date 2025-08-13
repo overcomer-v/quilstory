@@ -34,7 +34,7 @@ export function AllJournalLists() {
   ) : !events.length > 0 ? (
     <ErrorMessage message={"Your Events are empty"}></ErrorMessage>
   ) : (
-    <div className="grid md:grid-cols-3 gap-6 justify-start items-start page-animate">
+    <div className="grid md:grid-cols-2 md:gap-6 gap-3 justify-start items-start page-animate">
       {events.map((e) => (
         <JournalCard
           title={e.title}

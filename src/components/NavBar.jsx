@@ -33,10 +33,10 @@ export function NavBar({ showNav, setShowNav }) {
   return (
     <nav
       ref={navRef}
-      className={`flex h-full md:w-[230px] w-[250px] flex-col gap-2 md:px-4 overflow-hidden md:sticky absolute z-50 bg-white md: background-color: rgb(250, 250, 250);
+      className={`flex h-full md:w-[230px] w-[230px] flex-col gap-2 md:px-4 overflow-hidden md:sticky absolute z-50 bg-neutral-100 md: background-color: rgb(250, 250, 250);
  ${
    !matches || showNav ? " left-0" : " -left-60"
- } transition-all ease-in-out duration-500 pr-2 pl-4 py-8 md:border-r-[1px]`}
+ } transition-all ease-in-out duration-500 pr-2 pl-2 py-8 border-r-[1px]`}
     >
       <div className="flex items-center justify-between ml-9 mb-3">
         {" "}
@@ -49,7 +49,7 @@ export function NavBar({ showNav, setShowNav }) {
         ></i> */}
       </div>
       <div>
-        <h5 className="opacity-40 text-sm ml-9 mt-8 mb-4">Personal</h5>
+        <h5 className="opacity-30 text-xs ml-9 mt-4 mb-4">Personal</h5>
         <NavButton
           label={"Home"}
           iconClass={"fa-home"}
@@ -73,7 +73,7 @@ export function NavBar({ showNav, setShowNav }) {
           to={"/all-medias"}
         ></NavButton> */}
 
-        <h5 className="opacity-40 ml-9 text-sm mb-4 mt-12">General</h5>
+        <h5 className="opacity-40 ml-9 text-xs mb-4 mt-6">General</h5>
         <NavButton
           label={"About Us"}
           iconClass={"fa-bullseye"}
@@ -110,8 +110,8 @@ export function NavBar({ showNav, setShowNav }) {
       ? "text-blue-500 opacity-100"
       : "text-black opacity-40";
     const borderColor = isActive ? "bg-blue-500 " : "bg-transparent";
-    const textOpacity = isActive ? "opacity-100" : "opacity-40";
-    const bg = isActive ? "bg-[rgb(200,200,200,0.1)] bg-opacity-50" : "";
+    const textOpacity = isActive ? "opacity-100" : "opacity-50";
+    const bg = isActive ? "bg-[rgb(200,200,200,0.2)]" : "";
 
     return (
       <Link
@@ -124,7 +124,7 @@ export function NavBar({ showNav, setShowNav }) {
         <div className={`mr-3 ${borderColor} h-7 w-2 rounded-lg`}></div>
         <div className="flex gap-4 items-center justify-start">
           <i className={`fa ${iconClass} ${color} `}></i>
-          <div className={`${textOpacity} `}>{label}</div>
+          <div className={`${textOpacity} text-sm`}>{label} </div>
         </div>
       </Link>
     );
