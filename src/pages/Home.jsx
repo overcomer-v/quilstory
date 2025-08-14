@@ -32,16 +32,24 @@ export function Home() {
     <Spinner isDark={false} className={"w-24 h-24"}></Spinner>
   ) : (
     <div className="page-animate">
+
       <GreetingsAndDate name={currentUser?.displayName}></GreetingsAndDate>
-      <div className="mt-6 md:mt-12 flex flex-col gap-3">
-        <div className="flex md:gap-2 gap-2">
-          <QuickAccessItems
-            iconData={"fa-pen"}
-            title={"Write Journal"}
-            onClick={() => {
-              navigate("/editor/journals");
-            }}
-          ></QuickAccessItems>
+
+      <div className="mt-8 md:mt-12 flex flex-col gap-3">
+       <div className=" flex gap-2 font-light text-sm items-center w-[90%] shadow-bg shadow-md md:w-[350px] rounded-2xl px-5 py-4 ">
+        <i
+          className={`fa fa-pen z-10 bg-blue-600 p-1 w-fit rounded-lg bg-opacity-10 text-xs text-blue-600`}
+        ></i>
+        <input
+          type="text"
+          placeholder="Whats on your mind"
+          className="shadow-bg"
+        /> 
+       </div>
+         
+
+        <div className="flex md:gap-2 gap-2 mb-4">
+         
           <QuickAccessItems
             iconData={"fa-pencil"}
             title={"Add Note"}
@@ -49,19 +57,21 @@ export function Home() {
               navigate("/editor/notes");
             }}
           ></QuickAccessItems>
-          <div className="md:flex hidden">
-            <QuickAccessItems
-              iconData={"fa-camera"}
-              title={"Add Media"}
-            ></QuickAccessItems>
-          </div>
+
+          <QuickAccessItems
+            iconData={"fa-camera"}
+            title={"Add Media"}
+          ></QuickAccessItems>
         </div>
 
         <section id="recent-journals" className="md:mt-12 mt-6">
-         <Subtitle label={"Recent Journals"}></Subtitle>
+          <Subtitle label={"Recent Journals"}></Subtitle>
           <div className="grid md:grid-cols-2 gap-4">
             {isJournalLoading ? (
-              <Spinner isDark={true} className={"h-24 w-24 m-auto opacity-30"}></Spinner>
+              <Spinner
+                isDark={true}
+                className={"h-12 w-12 m-auto opacity-30"}
+              ></Spinner>
             ) : (
               events
                 ?.slice(0, 5)
@@ -77,10 +87,13 @@ export function Home() {
         </section>
 
         <section id="recent-Notes" className="mt-12">
-        <Subtitle label={"Recent Notes"}></Subtitle>
+          <Subtitle label={"Recent Notes"}></Subtitle>
           <div className="grid md:grid-cols-2 gap-3">
             {isNotesLoading ? (
-              <Spinner isDark={true} className={"h-24 w-24 opacity-30 m-auto"}></Spinner>
+              <Spinner
+                isDark={true}
+                className={"h-12 w-12 opacity-30 m-auto"}
+              ></Spinner>
             ) : (
               notes
                 ?.slice(0, 5)
@@ -129,10 +142,10 @@ function GreetingsAndDate({ name }) {
     }
   }
   return (
-    <div className="flex justify-between">
-      <div>
-        <h3 className="text-xs opacity-60 mb-1">WELCOME</h3>
-        <h1 className="text-2xl md:text-3xl">{name}</h1>
+    <div className="flex justify-between mt-12">
+      <div className="leading-none">
+        <h3 className="md:text-xs text-[0.6rem] opacity-60 md:mb-1">WELCOME</h3>
+        <h1 className="text-xl md:text-3xl">{name}</h1>
       </div>
 
       <div className="flex gap-1 items-center font-light [&_p]:text-xs [&_p]:opacity-80  leading-none">
@@ -152,12 +165,12 @@ function GreetingsAndDate({ name }) {
 }
 
 function Subtitle({ label }) {
- return <div className="flex gap-2 items-center mb-4">
-    <div className="w-4 h-4 bg-blue-300 rounded-full"></div>
-    <h1 className="md:text-xl text-lg font-bold opacity-90 ">
-      {label}
-    </h1>
-  </div>;
+  return (
+    <div className="flex gap-2 items-center mb-4">
+      <div className="w-4 h-4 bg-blue-700 rounded-full opacity-70"></div>
+      <h1 className="md:text-xl text-lg font-bold opacity-90 ">{label}</h1>
+    </div>
+  );
 }
 
 function QuickAccessItems({ iconData, title, onClick, edit }) {
@@ -165,12 +178,21 @@ function QuickAccessItems({ iconData, title, onClick, edit }) {
     <div>
       <button
         onClick={onClick}
-        className={`w-40 md:w-40 h-32 rounded-lg flex flex-col bg-neutral-100 justify-between relative items-start gap-3 px-6 py-4 shadow-md`}
+        className={` overflow-hidden rounded-xl flex shadow-bg relative items-center gap-2 px-3 py-2 shadow-md`}
       >
+        {/* <i className="fa fa-pen left-[6rem] opacity-5 top-[2rem] text-3xl absolute"></i> */}
+        {/* <i className="fa fa-circle absolute -right-3 -top-0 text-4xl text-[rgb(230,230,230)] ">
+          {" "}
+        </i>
+        <i className="fa fa-circle absolute -right-2 top-3 text-5xl text-[rgb(230,230,230)] ">
+          {" "}
+        </i> */}
+
         <i
-          className={`fa ${iconData} bg-blue-600 p-2 w-fit rounded-lg bg-opacity-10 text-blue-600`}
+          className={`fa ${iconData} z-10 bg-blue-600 p-1 w-fit rounded-lg bg-opacity-10 text-xs text-blue-600`}
         ></i>
-        <p className="text-sm opacity-70">{title}</p>
+
+        <p className="text-xs opacity-70">{title}</p>
       </button>
     </div>
   );

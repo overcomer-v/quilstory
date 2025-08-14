@@ -42,15 +42,15 @@ export function JournalEditor() {
   return loading ? (
     <div className="flex items-center justify-center w-full h-screen page-animate">
       <Spinner
-        className={"h-24 w-24 text-black opacity-70"}
+        className={"h-24 w-24 text-black opacity-70 m-auto"}
         isDark={true}
       ></Spinner>
     </div>
   ) : (
     <div className="">
-      <form className="flex flex-col font-light page-animate gap-6 md:gap-12 [&_input]:border-2 [&_input]:border-neutral-300">
+      <form className="flex flex-col font-light page-animate gap-3 md:gap-6 [&_input]:border-[1px] [&_input]:border-neutral-300">
         <input
-          className="px-4 py-3 rounded-xl md:w-[60%]"
+          className="px-4 py-3 rounded-lg w-[80%] md:w-[60%] text-sm"
           type="text"
           id="title"
           placeholder="Title"
@@ -62,7 +62,7 @@ export function JournalEditor() {
 
         <textarea
           rows={12}
-          className="border-2 border-neutral-300 p-4 rounded-xl"
+          className="border-[1px] border-neutral-300 p-4 rounded-lg text-sm"
           name="journal-i"
           id="notes-i"
           placeholder="Event"
@@ -73,7 +73,7 @@ export function JournalEditor() {
         ></textarea>
 
         <input
-          className="px-4 py-3 rounded-xl md:w-[60%]"
+          className="px-4 py-3 rounded-lg w-[80%] md:w-[60%] text-sm"
           type="text"
           value={tags}
           onChange={(e) => {
@@ -92,12 +92,13 @@ export function JournalEditor() {
           }}
           ref={selectFileRef}
         />
-        <div className="flex gap-4 md:flex-row flex-col w-full justify-end">
+        <div className="flex md:gap-4 justify-between md:flex-row w-full md:justify-end">
           <button
-            onClick={() => {
+            onClick={(e) => {
+              e.preventDefault();
               selectFileRef.current.click();
             }}
-            className="items-center gap-4 border-2 flex justify-center border-blue-500 rounded-lg md:w-fit px-6 py-3 text-blue-500"
+            className="items-center gap-4 flex justify-center text-sm shadow-md shadow-bg rounded-lg md:w-fit px-4 py-2 text-blue-600"
           >
             <i className="fa fa-image text-2xl"></i>
             <h2>Add picture</h2>
@@ -108,7 +109,7 @@ export function JournalEditor() {
             onClick={() => {
               uploadEventsHandler();
             }}
-            className="flex items-center gap-4 border-2 justify-center bg-blue-500 rounded-lg md:w-fit px-6 py-3 text-white"
+            className="flex items-center gap-4 border-2 text-sm justify-center bg-blue-600 rounded-lg md:w-fit px-4 py-2 text-white"
           >
             {isUploading ? (
               <Spinner isDark={false} className={"h-6 w-6"}></Spinner>

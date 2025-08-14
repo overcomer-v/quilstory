@@ -60,9 +60,11 @@ function App() {
       <div className="grid md:grid-cols-[240px_1fr] relative md:gap-2 w-full">
         <NavBar showNav={showNav} setShowNav={setShowNav}></NavBar>
 
-        <div className="md:px-8 overflow-y-auto h-screen md:p-0 w-full px-5">
+        <div className="md:px-8 overflow-y-auto h-screen md:p-0 w-full relative">
           <Header setShowNav={setShowNav}></Header>
-          <Outlet />
+          <div className="px-5">
+            <Outlet />
+          </div>
         </div>
       </div>
     );

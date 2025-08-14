@@ -33,7 +33,7 @@ export function Header({ setShowNav }) {
 
   function SmallScreensHeader({ setShowNav }) {
     return (
-      <header className="flex border-b-2 justify-between items-center py-4 mb-8 text-lg">
+      <header className="flex shadow-md sticky top-0 shadow-bg justify-between items-center py-4 mx-2 px-4 rounded-2xl mt-4 mb-8 text-lg ">
         <i
           className="fa fa-bars"
           onClick={() => {
@@ -52,8 +52,8 @@ export function Header({ setShowNav }) {
   }
 
   function LargeScreenHeader() {
-    return <header className="flex justify-between items-center gap-6 mb-12 pt-4">
-      <div className="text-xl font-bold opacity-70">{getCurrentNav()}</div>
+    return <header className="flex sticky top-0 justify-between items-center gap-6 pb-4 pt-4 w-full bg-main z-[1000]">
+      {/* <div className="text-xl font-bold opacity-70">{getCurrentNav()}</div> */}
       <div className="flex gap-2 px-4 py-3 max-w-xs grow bg-neutral-100 rounded-3xl items-center">
         <i className="fa fa-search opacity-70"></i>
         <input

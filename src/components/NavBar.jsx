@@ -33,7 +33,7 @@ export function NavBar({ showNav, setShowNav }) {
   return (
     <nav
       ref={navRef}
-      className={`flex h-full md:w-[230px] w-[230px] flex-col gap-2 md:px-4 overflow-hidden md:sticky absolute z-50 bg-neutral-100 md: background-color: rgb(250, 250, 250);
+      className={`flex h-full md:w-[230px] w-[230px] flex-col gap-2 md:px-4 overflow-hidden md:sticky absolute z-50 shadow-bg md: background-color: rgb(250, 250, 250);
  ${
    !matches || showNav ? " left-0" : " -left-60"
  } transition-all ease-in-out duration-500 pr-2 pl-2 py-8 border-r-[1px]`}

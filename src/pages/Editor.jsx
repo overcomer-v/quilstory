@@ -8,8 +8,8 @@ export function Editor() {
   const [type, setType] = useState(entryType ? entryType:"journals");
 
   return (
-    <div>
-      <div className="flex gap-3 mb-10 items-center">
+    <div className="">
+      <div className="flex gap-3 md:mb-10 mb-4 items-center">
         <SelectorButton
           idType={"journals"}
           text={"Journals"}
@@ -39,9 +39,9 @@ export function Editor() {
     return (
       <button
         onClick={onClick}
-        className={`px-4 h-10 ${
-          type === idType ? "bg-blue-600 text-white" : "border-[1px] border-neutral-300 text-neutral-600"
-        } rounded-xl`}
+        className={`md:px-5 md:h-10 px-5 h-10 text-sm ${
+          type === idType ? "bg-blue-600 text-white" : "shadow-bg text-neutral-600"
+        } rounded-2xl shadow-md`}
       >
         {text}
       </button>

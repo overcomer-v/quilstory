@@ -2,6 +2,7 @@ import { addDoc, collection, getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { db, storage } from "../utils/mfirebase";
 import { getDownloadURL, ref, uploadBytes } from "firebase/storage";
+import { supabase } from "../utils/supabase-client";
 
 export function useJournalDatabaseManager() {
   const [events, setEvent] = useState([]);
@@ -11,13 +12,13 @@ export function useJournalDatabaseManager() {
   async function uploadEvent(event, image, currentUserId) {
     if (image) {
       try {
-        const imgRef = ref(storage, `images/${image.name}`);
-        await uploadBytes(imgRef, image);
-        const downloadUrl = await getDownloadURL(imgRef);
-        await addDoc(collection(db, "users", currentUserId, "events"), {
-          ...event,
-          imageUrl: downloadUrl,
-        });
+        const imageData = await uploadImage(image, currentUserId);
+        if (imageData) {
+          await addDoc(collection(db, "users", currentUserId, "events"), {
+            ...event,
+            imageUrl: imageData,
+          });
+        }
       } catch (error) {
         alert(error);
         setError(error.message);
@@ -31,6 +32,46 @@ export function useJournalDatabaseManager() {
       }
     }
     return loadEvents(currentUserId);
+  }
+
+  async function getImageUrl(filePath) {
+    if (filePath) {
+      console.log(filePath);
+      try {
+        const { data, error } = await supabase.storage
+          .from("journal-images")
+          .createSignedUrl(filePath, 60);
+
+        if (error) {
+          throw error;
+        } else {
+          console.log(data.signedUrl);
+
+          return data.signedUrl;
+        }
+      } catch (error) {
+        console.log(error);
+      }
+    }
+  }
+  async function uploadImage(file, userId) {
+    try {
+      const filePath = `${userId}/${Date.now()}-${file.name}`;
+
+      const { data, error } = await supabase.storage
+        .from("journal-images")
+        .upload(filePath, file);
+
+      if (error) {
+        console.log(error);
+        return null;
+      } else {
+        console.log("success", data.path);
+        return data.path;
+      }
+    } catch (error) {
+      console.log("failed", error);
+    }
   }
 
   async function loadEvents(currentUserId) {
@@ -56,7 +97,14 @@ export function useJournalDatabaseManager() {
     }
   }
 
-  return { events, isJournalLoading, uploadEvent, loadEvents, journalError };
+  return {
+    events,
+    isJournalLoading,
+    uploadEvent,
+    loadEvents,
+    journalError,
+    getImageUrl,
+  };
 }
 
 export function useNoteDatabaseManager() {
