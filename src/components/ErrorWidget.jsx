@@ -1,6 +1,6 @@
 export function ErrorMessage({ message }) {
   return (
-    <div className="flex flex-col gap-6 items-center justify-center h-full w-full opacity-40 m-auto">
+    <div className="flex flex-col gap-6 items-center justify-center h-[60vh] w-full opacity-40 m-auto">
       <i className="fas fa-exclamation-circle text-6xl"></i>
       <p className="text-center">{message}</p>
     </div>

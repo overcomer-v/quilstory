@@ -18,7 +18,6 @@ class JournalEvent {
       id: this.id,
       date: this.date,
       title: this.title,
-      tags: this.getTags(),
       imageUrl: this.imageUrl,
       journalEvent: this.journalEvent,
     };

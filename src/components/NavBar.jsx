@@ -48,7 +48,7 @@ export function NavBar({ showNav, setShowNav }) {
           }}
         ></i> */}
       </div>
-      <div>
+      <div className="gap-1 flex flex-col">
         <h5 className="opacity-30 text-xs ml-9 mt-4 mb-4">Personal</h5>
         <NavButton
           label={"Home"}
@@ -119,7 +119,7 @@ export function NavBar({ showNav, setShowNav }) {
         onClick={() => {
           setShowNav(false);
         }}
-        className={`gap-4 w-full  ${bg} text-black py-4 rounded-xl flex items-center justify-start`}
+        className={`gap-4 w-full hover:bg-neutral-200 ${bg} text-black py-4 rounded-xl flex items-center justify-start`}
       >
         <div className={`mr-3 ${borderColor} h-7 w-2 rounded-lg`}></div>
         <div className="flex gap-4 items-center justify-start">

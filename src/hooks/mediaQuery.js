@@ -14,6 +14,5 @@ export function useMediaQuery(query) {
 
     },[query]);
 
-    console.log(matches);
     return matches;
 }

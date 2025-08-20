@@ -1,16 +1,25 @@
 import { useJournalDatabaseManager } from "../hooks/dbManager";
-import { JournalCard } from "../components/JournalCard";
+import { ItemCard } from "../components/ItemsCard";
 import { useAuth } from "../contexts/AuthContext";
 import { Spinner } from "../components/Spinner";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useInternetStatus } from "../hooks/internetStatus";
 import { ErrorMessage, OfflineMessage } from "../components/ErrorWidget";
+import { useNavigate } from "react-router-dom";
 
 export function AllJournalLists() {
-  const { events, isJournalLoading, loadEvents, journalError, getImageUrl } =
-    useJournalDatabaseManager();
+  const {
+    events,
+    isJournalLoading,
+    loadEvents,
+    journalError,
+    getImageUrl,
+    deleteItem,
+  } = useJournalDatabaseManager();
   const isOnline = useInternetStatus();
   const { loading, currentUser } = useAuth();
+  const navigate = useNavigate();
+  const pageRef = useRef();
 
   useEffect(() => {
     if (currentUser) {
@@ -18,12 +27,23 @@ export function AllJournalLists() {
     }
   }, [currentUser, loading]);
 
-  return !isOnline ? (
-    <OfflineMessage></OfflineMessage>
-  ) : isJournalLoading || loading ? (
-    <div className="flex items-center justify-center w-full h-screen">
+  // !isOnline ? (
+  //     <OfflineMessage></OfflineMessage>
+  //   ) :
+
+  async function onActions(action, id, imagePath) {
+    if (action === "Delete") {
+      await deleteItem(currentUser.uid, id, imagePath);
+    } else if (action === "Edit") {
+      navigate(`/journal-editor/${id}`);
+      console.log("Go to edit page");
+    }
+  }
+
+  return isJournalLoading || loading ? (
+    <div className="flex items-center justify-center w-full h-[60vh]">
       <Spinner
-        className={"h-24 w-24 text-black opacity-70"}
+        className={"h-16 w-16 text-black opacity-70"}
         isDark={true}
       ></Spinner>
     </div>
@@ -32,37 +52,24 @@ export function AllJournalLists() {
   ) : !events.length > 0 ? (
     <ErrorMessage message={"Your Events are empty"}></ErrorMessage>
   ) : (
-    <div className="grid :grid-cols-2 md:grid-cols-2 md:gap-6 gap-3 justify-start items-start page-animate">
+    <div
+      ref={pageRef}
+      className="grid md:grid-cols-[repeat(auto-fit,minmax(200px,250px))] grid-cols-1 md:gap-8 gap-3 justify-start items-start page-animate"
+    >
       {events.map((e) => {
+        // console.log(e)
         return (
-         <JournalPageCard
-           title={e.title}
-            prev={e.journalEvent}
-            date={e.date}
-            imagePath={e?.imageUrl}>
-         </JournalPageCard>
+          <ItemCard
+            key={e.id}
+            ref={pageRef}
+            item={e}
+            onAction={onActions}
+            onClick={() => {
+              navigate(`/item-view/journal/${e.id}`);
+            }}
+          ></ItemCard>
         );
       })}
     </div>
   );
-} 
-
-export function JournalPageCard({ imagePath, title, prev, date }) {
-  const { getImageUrl } = useJournalDatabaseManager();
-
-  const [imageUrl, setImageUrl] = useState();
-
-  useEffect(() => {
-    getImageUrl(imagePath).then((url) => {
-      console.log(url);
-      setImageUrl(url);
-    });
-  }, []);
-
-  return <JournalCard
-    title={title}
-    prev={prev}
-    date={date}
-    imgSrc={imageUrl}
-  ></JournalCard>;
 }

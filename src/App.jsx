@@ -1,5 +1,11 @@
 import { useEffect, useState } from "react";
-import { HashRouter, Outlet, Route, Routes, useNavigate } from "react-router-dom";
+import {
+  HashRouter,
+  Outlet,
+  Route,
+  Routes,
+  useNavigate,
+} from "react-router-dom";
 import { AllJournalLists } from "./pages/JournalsList";
 import { Header } from "./components/Header";
 import { NavBar } from "./components/NavBar";
@@ -11,9 +17,10 @@ import { Spinner } from "./components/Spinner";
 import { Home } from "./pages/Home";
 import { Entries } from "./pages/AllEntries";
 import { Editor } from "./pages/Editor";
+import { NotesEditor } from "./pages/NotesEditor";
+import { ItemView } from "./pages/ItemView";
 
 function App() {
-
   return (
     <AuthContextProvider>
       <HashRouter>
@@ -27,6 +34,20 @@ function App() {
               path="/editor/:entryType?"
               element={<Editor></Editor>}
             ></Route>
+            <Route path="/item-view/:type/:itemId" element = {<ItemView></ItemView>}></Route>
+            <Route
+              path="/journal-editor/:journalId?"
+              element={<JournalEditor></JournalEditor>}
+            ></Route>
+             <Route
+              path="/note-editor/:noteId?"
+              element={<NotesEditor></NotesEditor>}
+            ></Route>
+            <Route
+              path="/note-editor"
+              element={<NotesEditor></NotesEditor>}
+            ></Route>
+
             <Route path="/home" element={<Home></Home>}></Route>
           </Route>
         </Routes>
@@ -35,34 +56,31 @@ function App() {
   );
 
   function UserLayout() {
-    const { loading,currentUser } = useAuth();
+    const { loading, currentUser } = useAuth();
     const [showNav, setShowNav] = useState(false);
     const navigate = useNavigate();
 
-    useEffect(()=>{
-
+    useEffect(() => {
       if (!loading && !currentUser) {
         navigate("/");
       }
 
-      console.log(loading,currentUser);
-
-    },[loading]);
+    }, [loading]);
 
     return loading ? (
       <div className="flex items-center justify-center w-full h-screen ">
         <Spinner
-          className={"h-24 w-24 text-black opacity-30"}
+          className={"h-16 w-16 text-black opacity-30"}
           isDark={true}
         ></Spinner>
       </div>
     ) : (
-      <div className="grid md:grid-cols-[240px_1fr] relative md:gap-2 w-full">
+      <div className="grid md:grid-cols-[240px_1fr] relative md:gap-2 w-full h-full lg:min-w-6xl">
         <NavBar showNav={showNav} setShowNav={setShowNav}></NavBar>
 
-        <div className="md:px-8 overflow-y-auto h-screen md:p-0 w-full relative">
+        <div className=" overflow-y-auto h-screen md:p-0 w-full relative">
           <Header setShowNav={setShowNav}></Header>
-          <div className="px-5">
+          <div className="px-5 h-full mt-6 ">
             <Outlet />
           </div>
         </div>

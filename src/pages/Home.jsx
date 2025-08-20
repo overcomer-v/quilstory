@@ -5,12 +5,13 @@ import {
 } from "../hooks/dbManager";
 import { useAuth } from "../contexts/AuthContext";
 import { Spinner } from "../components/Spinner";
-import { HorizontalJournalCard } from "../components/JournalCard";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { HorizontalItemCard } from "../components/ItemsCard";
+import { getDateType, monthArray } from "../utils/date-formatter";
 
 export function Home() {
   const { events, isJournalLoading, loadEvents } = useJournalDatabaseManager();
-  const { notes, notesError, loadNotes, isNotesLoading } =
+  const { notes, loadNotes, isNotesLoading } =
     useNoteDatabaseManager();
   const { loading, currentUser } = useAuth();
   const navigate = useNavigate();
@@ -32,24 +33,20 @@ export function Home() {
     <Spinner isDark={false} className={"w-24 h-24"}></Spinner>
   ) : (
     <div className="page-animate">
-
-      <GreetingsAndDate name={currentUser?.displayName}></GreetingsAndDate>
+      <GreetingsAndDate name={currentUser?.displayName} message={"WELCOME"}></GreetingsAndDate>
 
       <div className="mt-8 md:mt-12 flex flex-col gap-3">
-       <div className=" flex gap-2 font-light text-sm items-center w-[90%] shadow-bg shadow-md md:w-[350px] rounded-2xl px-5 py-4 ">
-        <i
-          className={`fa fa-pen z-10 bg-blue-600 p-1 w-fit rounded-lg bg-opacity-10 text-xs text-blue-600`}
-        ></i>
-        <input
-          type="text"
-          placeholder="Whats on your mind"
-          className="shadow-bg"
-        /> 
-       </div>
-         
+        <Link
+          to={"/editor/journals"}
+          className=" flex gap-2 font-light text-sm items-center w-[90%] shadow-bg shadow-md md:w-[350px] rounded-2xl px-5 py-4 "
+        >
+          <i
+            className={`fa fa-pen z-10 bg-blue-600 p-1 w-fit rounded-lg bg-opacity-10 text-xs text-blue-600`}
+          ></i>
+          <p className="opacity-30">Whats on your mind</p>
+        </Link>
 
         <div className="flex md:gap-2 gap-2 mb-4">
-         
           <QuickAccessItems
             iconData={"fa-pencil"}
             title={"Add Note"}
@@ -66,7 +63,7 @@ export function Home() {
 
         <section id="recent-journals" className="md:mt-12 mt-6">
           <Subtitle label={"Recent Journals"}></Subtitle>
-          <div className="grid md:grid-cols-2 gap-4">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,500px))] gap-4">
             {isJournalLoading ? (
               <Spinner
                 isDark={true}
@@ -76,11 +73,15 @@ export function Home() {
               events
                 ?.slice(0, 5)
                 .map((e) => (
-                  <HorizontalJournalCard
+                  <HorizontalItemCard
                     title={e.title}
                     date={e.date}
                     prev={e.journalEvent}
-                  ></HorizontalJournalCard>
+                    imgSrc={e.imageSrc}
+                    onClick={()=>{
+                       navigate(`/item-view/journal/${e.id}`)
+                    }}
+                  ></HorizontalItemCard>
                 ))
             )}
           </div>
@@ -88,7 +89,7 @@ export function Home() {
 
         <section id="recent-Notes" className="mt-12">
           <Subtitle label={"Recent Notes"}></Subtitle>
-          <div className="grid md:grid-cols-2 gap-3">
+          <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,500px))] gap-3">
             {isNotesLoading ? (
               <Spinner
                 isDark={true}
@@ -98,11 +99,14 @@ export function Home() {
               notes
                 ?.slice(0, 5)
                 .map((e) => (
-                  <HorizontalJournalCard
+                  <HorizontalItemCard
                     title={e.title}
                     date={e.date}
                     prev={e.note}
-                  ></HorizontalJournalCard>
+                      onClick={()=>{
+                       navigate(`/item-view/note/${e.id}`)
+                    }}
+                  ></HorizontalItemCard>
                 ))
             )}
           </div>
@@ -112,39 +116,15 @@ export function Home() {
   );
 }
 
-function GreetingsAndDate({ name }) {
-  const monthArray = [
-    "Jan",
-    "Feb",
-    "Mar",
-    "April",
-    "May",
-    "June",
-    "July",
-    "Aug",
-    "Sept",
-    "Oct",
-    "Nov",
-    "Dec",
-  ];
+function GreetingsAndDate({ name, message }) {
+
   const date = new Date(Date.now());
 
-  function getDateType(date) {
-    switch (date) {
-      case 1:
-        return "st";
-      case 2:
-        return "nd";
-      case 3:
-        return "rd";
-      default:
-        return "th";
-    }
-  }
+
   return (
     <div className="flex justify-between mt-12">
       <div className="leading-none">
-        <h3 className="md:text-xs text-[0.6rem] opacity-60 md:mb-1">WELCOME</h3>
+        <h3 className="md:text-xs text-[0.6rem] opacity-60 md:mb-1">{message}</h3>
         <h1 className="text-xl md:text-3xl">{name}</h1>
       </div>
 
@@ -173,7 +153,7 @@ function Subtitle({ label }) {
   );
 }
 
-function QuickAccessItems({ iconData, title, onClick, edit }) {
+function QuickAccessItems({ iconData, title, onClick }) {
   return (
     <div>
       <button

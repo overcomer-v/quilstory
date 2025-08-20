@@ -21,7 +21,7 @@ export function FrontPage() {
     <div className="relative">
       {loading ? (
         <div className="bg-black z-50 bg-opacity-70 w-screen items-center justify-center h-full flex flex-col absolute">
-          <Spinner className={"h-24 w-24 "}></Spinner>
+          <Spinner className={"h-14 w-14 "}></Spinner>
           <div className="mt-1 text-white">Getting Accounts...</div>
         </div>
       ) : (

@@ -1,27 +1,45 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAuth } from "../contexts/AuthContext";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { useNoteDatabaseManager } from "../hooks/dbManager";
 import { createNoteObject } from "../models/Notes";
 import { Spinner } from "../components/Spinner";
 
 export function NotesEditor() {
-  const { uploadNotes } = useNoteDatabaseManager();
+  const { uploadNotes, getNoteItem, updateNoteItem } = useNoteDatabaseManager();
   const { currentUser, loading } = useAuth();
-
+  const { noteId } = useParams();
   const [title, setTitle] = useState("");
   const [note, setNote] = useState();
   const [isUploading, setIsUploading] = useState(false);
 
   const navigate = useNavigate();
 
+  useEffect(() => {
+    if (noteId) {
+      getNoteItem(currentUser.uid, noteId).then((result) => {
+        setNote(result.note);
+        setTitle(result.title);
+      });
+    }
+  }, []);
   async function uploadNotesHandler() {
     const formatter = new Date(Date.now());
 
-    const notee = createNoteObject({ title, date: formatter.toLocaleString(), note });
+    const notee = createNoteObject({
+      title,
+      ...(!noteId
+        ? { date: formatter.toLocaleString() }
+        : { dateupdated: formatter.toLocaleString() }),
+      note,
+    });
     try {
       setIsUploading(true);
-      await uploadNotes(notee, currentUser.uid);
+      if (noteId) {
+        await updateNoteItem(currentUser.uid, noteId, notee);
+      } else {
+        await uploadNotes(notee, currentUser.uid);
+      }
       console.log(notee);
       navigate("/entries");
     } catch (error) {
@@ -34,7 +52,7 @@ export function NotesEditor() {
   return loading ? (
     <div className="flex items-center justify-center w-full h-screen">
       <Spinner
-        className={"h-24 w-24 text-black opacity-70"}
+        className={"h-16 w-16 text-black opacity-70"}
         isDark={true}
       ></Spinner>
     </div>
@@ -42,7 +60,7 @@ export function NotesEditor() {
     <div className="">
       <form className="flex flex-col page-animate font-light gap-12 [&_input]:border-2 [&_input]:border-neutral-300">
         <input
-          className="px-4 py-3 rounded-xl md:w-[60%]"
+          className="px-4 py-3 rounded-lg w-[80%] md:w-[60%] text-sm max-w-[600px]"
           type="text"
           id="title"
           placeholder="Title"
@@ -54,7 +72,7 @@ export function NotesEditor() {
 
         <textarea
           rows={12}
-          className="border-2 border-neutral-300 p-4 rounded-xl"
+          className="border-[1px] border-neutral-300 p-4 rounded-lg text-sm max-w-[900px]"
           name="journal-i"
           id="notes-i"
           placeholder="Event"
