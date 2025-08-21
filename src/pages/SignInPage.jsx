@@ -99,7 +99,7 @@ export function SignInPage() {
               className={`h-4 w-4 ${spinnerLoading ? "" : "hidden"}`}
             ></Spinner>
           </button>
-          <button 
+          {/* <button 
            onClick={ async () => {
              try {
                   setSpinnerLoading(true);
@@ -114,7 +114,7 @@ export function SignInPage() {
           className="px-6 py-2 w-full items-center justify-center flex gap-2 rounded-md border-[1px] border-neutral-300">
             <i className="fab fa-google text-blue-700"></i>
             <p>Sign up with Google </p>
-          </button>
+          </button> */}
 
           <p
             className={`w-full text-left text-sm font-light text-red-500 ${
@@ -194,7 +194,7 @@ export function SignInPage() {
               className={`h-4 w-4 ${spinnerLoading ? "" : "hidden"}`}
             ></Spinner>
           </button>
-          <button
+          {/* <button
             onClick={ async () => {
                try {
                   return await signInWithGoogle(uploadEvent);
@@ -207,7 +207,7 @@ export function SignInPage() {
           >
             <i className="fab fa-google text-blue-700"></i>
             <p>Sign In with Google </p>
-          </button>
+          </button> */}
 
           <p
             className={`w-full text-left text-sm font-light text-red-500 ${

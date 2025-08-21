@@ -33,7 +33,7 @@ export function Header({ setShowNav }) {
 
   function SmallScreensHeader({ setShowNav }) {
     return (
-      <header className="flex shadow-md sticky top-0 shadow-bg justify-between items-center py-4 mx-2 px-4 z-[1000] rounded-2xl mt-4 mb-8 text-lg ">
+      <header className="flex shadow-md sticky top-0 shadow-bg justify-between items-center py-4 mx-2 px-4 z-[900] rounded-2xl mt-4 mb-8 text-lg ">
         <i
           className="fa fa-bars"
           onClick={() => {
@@ -45,7 +45,6 @@ export function Header({ setShowNav }) {
         </h1>
         <div className="flex gap-4">
           <i className="fa fa-search"></i>
-          <i className="fa fa-bullseye"></i>
         </div>
       </header>
     );

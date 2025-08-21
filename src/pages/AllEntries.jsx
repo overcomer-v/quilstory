@@ -61,25 +61,22 @@ export function Entries({ listtype = "journals" }) {
 
 function Greetings() {
   const date = new Date();
-  const {currentUser} = useAuth();
+  const { currentUser } = useAuth();
 
-
-  function greeting (){
+  function greeting() {
     if (date.getHours() < 12) {
       return "GoodMorning";
     } else if (date.getHours() > 11 && date.getHours() < 16) {
       return "GoodAfternoon";
-    }else if (date.getHours() > 16){
-      return "GoodEvening"
+    } else if (date.getHours() > 16) {
+      return "GoodEvening";
     }
-    
-  };
+  }
   return (
     <div className=" flex justify-between">
       <div>
-              <h1 className="text-2xl">{greeting()}</h1>
-              <p className="opacity-50 font-light">{currentUser.displayName}</p>
-
+        <h1 className="text-2xl">{greeting()}</h1>
+        <p className="opacity-50 font-light">{currentUser.displayName}</p>
       </div>
       <div className="flex gap-1 items-center font-light [&_p]:text-xs [&_p]:opacity-80  leading-none">
         <h1 className="md:text-4xl text-3xl">
@@ -107,7 +104,7 @@ function FloatingActionButton({ text, type }) {
       className="fa-bounce shadow-md p-3 flex right-5 w-fit bottom-5 rounded-lg items-center shadow-bg gap-2"
     >
       <i className="fa fa-plus text-blue-600 text-xl"></i>
-      <p className="opacity-70 text-sm">{text}</p>
+      <p className="opacity-70 text-sm md:flex hidden">{text}</p>
     </button>
   );
 }
