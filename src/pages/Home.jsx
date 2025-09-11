@@ -71,7 +71,7 @@ export function Home() {
     return (
       <section id="recent-journals" className="md:mt-12 mt-6">
         <Subtitle label={"Recent Journals"}></Subtitle>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,500px))] gap-4">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-4">
           {isJournalLoading ? (
             <Spinner
               isDark={true}
@@ -100,7 +100,7 @@ export function Home() {
     return (
       <section id="recent-Notes" className="mt-12">
         <Subtitle label={"Recent Notes"}></Subtitle>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,500px))] gap-3">
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,1fr))] gap-3">
           {isNotesLoading ? (
             <Spinner
               isDark={true}
