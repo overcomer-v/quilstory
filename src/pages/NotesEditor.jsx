@@ -10,27 +10,27 @@ export function NotesEditor() {
   const { currentUser, loading } = useAuth();
   const { noteId } = useParams();
   const [title, setTitle] = useState("");
-  const [note, setNote] = useState();
+  const [note, setNote] = useState("");
   const [isUploading, setIsUploading] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
     if (noteId) {
-      getNoteItem(currentUser.uid, noteId).then((result) => {
+      getNoteItem(currentUser.id, noteId).then((result) => {
         setNote(result.note);
         setTitle(result.title);
       });
     }
   }, []);
   async function uploadNotesHandler() {
-    const formatter = new Date(Date.now());
+
 
     const notee = createNoteObject({
       title,
-      ...(!noteId
-        ? { date: formatter.toLocaleString() }
-        : { dateupdated: formatter.toLocaleString() }),
+      // ...(!noteId
+      //   ? { date: formatter.toLocaleString() }
+      //   : { dateupdated: formatter.toLocaleString() }),
       note,
     });
     try {
@@ -38,7 +38,7 @@ export function NotesEditor() {
       if (noteId) {
         await updateNoteItem(currentUser.uid, noteId, notee);
       } else {
-        await uploadNotes(notee, currentUser.uid);
+        await uploadNotes(notee, currentUser.id);
       }
       console.log(notee);
       navigate("/entries");
@@ -57,8 +57,8 @@ export function NotesEditor() {
       ></Spinner>
     </div>
   ) : (
-    <div className="">
-      <form className="flex flex-col page-animate font-light gap-12 [&_input]:border-2 [&_input]:border-neutral-300">
+    <div className=" mt-6">
+      <form className="flex flex-col page-animate font-light gap-6 [&_input]:border-2 [&_input]:border-neutral-300">
         <input
           className="px-4 py-3 rounded-lg w-[80%] md:w-[60%] text-sm max-w-[600px]"
           type="text"
@@ -95,7 +95,7 @@ export function NotesEditor() {
             ) : (
               <i className="fa fa-check text-2xl"></i>
             )}
-            <h2>Save Journal</h2>
+            <h2>Save Note</h2>
           </button>
         </div>
       </form>

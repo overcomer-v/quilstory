@@ -48,10 +48,10 @@ export function ItemView() {
         ></Button>
         <Button text={"Delete"} iconData={"fa-trash"} onClick={async ()=>{
           if (type === "journal") {
-            await deleteItem(currentUser.uid, itemId, item.imageUrl);
+            await deleteItem(currentUser.id, itemId, item.image_url);
             navigate("/entries");
           }else{
-            await deleteNoteItem(currentUser.uid,itemId);
+            await deleteNoteItem(currentUser.id,itemId);
           }
         }}></Button>
         <Button text={"Share"} iconData={"fa-share"}></Button>
@@ -64,14 +64,14 @@ export function ItemView() {
       </div>
       <div className="mt-8 gap-2">
         <img
-          className="rounded-lg h-[350px] object-cover float-left mr-4"
+          className="rounded-lg h-[350px] object-cover float-left mr-4 mb-8"
           src={item.imageSrc ?? "/images/pexels-photo-1018133.jpeg"}
           alt=""
         />
-        <p className="font-light text-base opacity-90 w-[80%]">
-          {item.journalEvent ?? item.note}
+        <p className="font-light text-base opacity-90 w-[80%] mt-4">
+          {item.event ?? item.note}
         </p>
-        <p>{`Tags : ${item.tags}`}</p>
+        <p>{`Tags : ${item.tag}`}</p>
       </div>
     </div>
   );

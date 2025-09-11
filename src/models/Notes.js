@@ -1,3 +1,3 @@
-export function createNoteObject({ title, date, note }) {
-  return { title, note, date };
+export function createNoteObject({ title, note }) {
+  return { title, note };
 }

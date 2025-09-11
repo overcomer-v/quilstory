@@ -14,28 +14,36 @@ import { supabase } from "../utils/supabase-client";
 export function useJournalDatabaseManager() {
   const [events, setEvent] = useState([]);
   const [isJournalLoading, setIsDataLoading] = useState(true);
-  const [journalError, setError] = useState("");
+
+  const profilesTable = "profiles";
+  const journalsTable = "journals";
 
   async function uploadEvent(event, image, currentUserId) {
     if (image) {
       try {
         const imageData = await uploadImage(image, currentUserId);
         if (imageData) {
-          await addDoc(collection(db, "users", currentUserId, "events"), {
-            ...event,
-            imageUrl: imageData,
-          });
+          const { error } = await supabase
+            .from(journalsTable)
+            .insert([{ ...event, image_url: imageData }]);
+
+          if (error) {
+            throw error;
+          }
         }
       } catch (error) {
-        alert(error);
-        setError(error.message);
+        console.log(error);
+        throw error;
       }
     } else {
       try {
-        await addDoc(collection(db, "users", currentUserId, "events"), event);
+        const { error } = await supabase.from(journalsTable).insert([event]);
+        if (error) {
+          throw error;
+        }
       } catch (error) {
-        alert(error);
-        setError(error);
+        console.log(error);
+        throw error;
       }
     }
     return loadEvents(currentUserId);
@@ -91,12 +99,18 @@ export function useJournalDatabaseManager() {
     console.log("image deleted");
   }
 
-  async function deleteDocumentFromFirestore(itemId, currentUserId) {
-    const docRef = doc(db, "users", currentUserId, "events", itemId);
+  async function deleteJournalInfo(itemId) {
     try {
-      await deleteDoc(docRef);
+      const { error } = await supabase
+        .from(journalsTable)
+        .delete()
+        .eq("id", itemId);
+
+      if (error) {
+        throw error;
+      }
     } catch (error) {
-      console.log("firebase", error);
+      console.log("documentInfo", error);
     }
     console.log("items deleted");
   }
@@ -109,7 +123,7 @@ export function useJournalDatabaseManager() {
         console.log("No imagePath");
       }
       if (itemId) {
-        await deleteDocumentFromFirestore(itemId, currentUserId);
+        await deleteJournalInfo(itemId);
       } else {
         console.log("No item id");
       }
@@ -121,26 +135,31 @@ export function useJournalDatabaseManager() {
 
   async function loadEvents(currentUserId) {
     if (currentUserId) {
+      console.log(currentUserId);
       setIsDataLoading(true);
       try {
-        const fetchedDocs = await getDocs(
-          collection(db, "users", currentUserId, "events")
-        );
+        const { data, error } = await supabase
+          .from(journalsTable)
+          .select("*")
+          .eq("user_id", currentUserId);
+
+        if (error) {
+          throw error;
+        }
 
         const items = await Promise.allSettled(
-          fetchedDocs.docs.map(async (obj) => {
+          data.map(async (obj) => {
             return {
-              ...obj.data(),
-              id: obj.id,
-              imageSrc: await getImageUrl(obj.data().imageUrl),
+              ...obj,
+              imageSrc: await getImageUrl(obj.image_url),
             };
           })
         );
 
         setEvent(items.map((e) => e.value));
       } catch (error) {
-        alert(error.message);
-        setError(error.message);
+        console.error(error);
+        throw error;
       } finally {
         setIsDataLoading(false);
       }
@@ -153,14 +172,19 @@ export function useJournalDatabaseManager() {
     try {
       setIsDataLoading(true);
       console.log(itemId);
-      const docRef = doc(db, "users", currentUserId, "events", itemId);
-      const docSnap = await getDoc(docRef);
-      setIsDataLoading(false);
-      if (docSnap.exists()) {
+      const { data, error } = await supabase
+        .from(journalsTable)
+        .select("*")
+        .eq("id", itemId);
+
+      if (error) {
+        throw error;
+      }
+
+      if (data.length != 0) {
         return {
-          imageSrc: await getImageUrl(docSnap.data().imageUrl),
-          ...docSnap.data(),
-          id: docSnap.id,
+          ...data[0],
+          imageSrc: await getImageUrl(data[0].image_url),
         };
       } else {
         console.log("Document does not exist");
@@ -174,38 +198,55 @@ export function useJournalDatabaseManager() {
     return null;
   }
 
-  async function updateItem(currentUserId, itemId, item, oldImagePath,  image) {
+  async function updateItem(currentUserId, itemId, item, oldImagePath, image) {
     if (image) {
       if (oldImagePath) {
-        await supabase.storage.from("journal-images").remove([oldImagePath]);
+        const { error } = await supabase.storage
+          .from("journal-images")
+          .remove([oldImagePath]);
+
+        if (error) {
+          throw error;
+        }
       }
 
       const newImagePath = await uploadImage(image, currentUserId);
       try {
-        const docRef = doc(db, "users", currentUserId, "events", itemId);
-        await updateDoc(docRef, { ...item, imageUrl:newImagePath });
+        const { error } = await supabase
+          .from(journalsTable)
+          .update({ ...item, image_url: newImagePath })
+          .eq("id", itemId);
+
+        if (error) {
+          throw error;
+        }
         console.log("Document updated");
       } catch (error) {
         console.log(error);
       }
-    }else{
-      
-    try {
-      const docRef = doc(db, "users", currentUserId, "events", itemId);
-      await updateDoc(docRef, item);
-      console.log("Document updated");
-    } catch (error) {
-      console.log(error);
-    }
-    }
+    } else {
+      try {
+        const { error } = await supabase
+          .from(journalsTable)
+          .update(item)
+          .eq("id", itemId);
 
+        if (error) {
+          throw error;
+        }
+
+        console.log("Document updated");
+      } catch (error) {
+        console.log(error);
+      }
+    }
   }
+
   return {
     events,
     isJournalLoading,
     uploadEvent,
     loadEvents,
-    journalError,
     getImageUrl,
     deleteItem,
     getItem,
@@ -216,7 +257,9 @@ export function useJournalDatabaseManager() {
 export function useNoteDatabaseManager() {
   const [notes, setNotes] = useState([]);
   const [isNotesLoading, setIsDataLoading] = useState(true);
-  const [notesError, setError] = useState("");
+  // const [notesError, setError] = useState("");
+
+  const notesTable = "notes";
 
   useEffect(() => {
     console.log(notes);
@@ -224,11 +267,16 @@ export function useNoteDatabaseManager() {
 
   async function uploadNotes(note, currentUserId) {
     try {
-      await addDoc(collection(db, "users", currentUserId, "notes"), note);
-      return loadNotes(currentUserId);
+      const { error } = await supabase.from(notesTable).insert([note]);
+
+      if (error) {
+        throw error;
+      }
+
+      await loadNotes(currentUserId);
     } catch (error) {
-      setError(error.message);
-      alert(error.message);
+      console.error(error);
+      throw error;
     }
   }
 
@@ -236,16 +284,18 @@ export function useNoteDatabaseManager() {
     if (currentUserId) {
       setIsDataLoading(true);
       try {
-        const fetchedDocs = await getDocs(
-          collection(db, "users", currentUserId, "notes")
-        );
-        const items = fetchedDocs.docs.map((doc) => {
-          return { ...doc.data(), id: doc.id };
-        });
-        setNotes(items);
+        const { error, data } = await supabase
+          .from(notesTable)
+          .select("*")
+          .eq("user_id", currentUserId);
+
+        if (error) {
+          throw error;
+        }
+
+        setNotes(data);
       } catch (error) {
-        alert(error.message);
-        setError(error.message);
+        console.error(error);
       } finally {
         setIsDataLoading(false);
       }
@@ -257,19 +307,25 @@ export function useNoteDatabaseManager() {
   async function getNoteItem(currentUserId, noteId) {
     try {
       setIsDataLoading(true);
-      const docRef = doc(db, "users", currentUserId, "notes", noteId);
-      const docSnap = await getDoc(docRef);
 
-      if (docSnap.exists()) {
-        return {
-          ...docSnap.data(),
-          id: docSnap.id,
-        };
+      const { data, error } = await supabase
+        .from(notesTable)
+        .select("*")
+        .eq("id", noteId);
+
+      if (error) {
+        throw error;
+      }
+
+      if (data) {        console.log(data);
+
+        return data[0];
       } else {
         console.log("document does not exist");
       }
     } catch (error) {
       console.error("An error occurred", error);
+      throw error;
     } finally {
       setIsDataLoading(false);
     }
@@ -277,8 +333,15 @@ export function useNoteDatabaseManager() {
 
   async function deleteNoteItem(currentUserId, noteId) {
     try {
-      const docRef = doc(db, "users", currentUserId, "notes", noteId);
-      await deleteDoc(docRef);
+      const { error } = await supabase
+        .from(notesTable)
+        .delete()
+        .eq("id", noteId);
+
+      if (error) {
+        throw error;
+      }
+
       loadNotes(currentUserId);
       console.log("Note deleted successfully");
     } catch (error) {
@@ -287,11 +350,19 @@ export function useNoteDatabaseManager() {
   }
   async function updateNoteItem(currentUserId, noteId, noteItem) {
     try {
-      const docRef = doc(db, "users", currentUserId, "notes", noteId);
-      await updateDoc(docRef, noteItem);
+      const { error } = await supabase
+        .from(notesTable)
+        .update(noteItem)
+        .eq("id", noteId);
+
+      if (error) {
+        throw error;
+      }
+
       console.log("Note Updated");
     } catch (error) {
       console.error("An error occured", error);
+      throw error;
     }
   }
 
@@ -300,7 +371,6 @@ export function useNoteDatabaseManager() {
     isNotesLoading,
     uploadNotes,
     loadNotes,
-    notesError,
     getNoteItem,
     updateNoteItem,
     deleteNoteItem,

@@ -1,33 +1,42 @@
 import { onAuthStateChanged } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
 import { auth } from "../utils/mfirebase";
+import { supabase } from "../utils/supabase-client";
 
 const AuthContext = createContext();
 
 export function AuthContextProvider({ children }) {
   const [loading, setLoading] = useState(true);
   const [currentUser, setUser] = useState(null);
+  const [userName, setUserName] = useState();
 
   useEffect(() => {
-    const unsubscribe = onAuthStateChanged(auth, (user) => {
-      try {
-        setUser(user);
-        console.log(user);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setTimeout(() => {
-          setLoading(false);
-        }, 2000);
-      }
-      console.log(currentUser, loading);
+    setLoading(true);
+    supabase.auth.getSession().then(({ data }) => {
+      setUser(data.session.user ?? null);
+      supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", data.session.user.id)
+        .then(({data}) => {
+          setUserName(data[0].username);
+        });
+      setLoading(false);
     });
 
-    return () => unsubscribe();
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (_event, session) => {
+        setUser(session?.user ?? null);
+        setLoading(false);
+        console.log(session?.user);
+      }
+    );
+
+    return () => listener.subscription.unsubscribe();
   }, []);
 
   return (
-    <AuthContext.Provider value={{ currentUser, loading }}>
+    <AuthContext.Provider value={{ currentUser, loading, userName }}>
       {children}
     </AuthContext.Provider>
   );

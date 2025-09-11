@@ -15,8 +15,9 @@ export function JournalEditor() {
   const [tags, setTags] = useState("");
   const [events, setEvent] = useState("");
   const [imageSrc, setImages] = useState();
-  const [imageFile,setImageFile] = useState();
+  const [imageFile, setImageFile] = useState();
   const [isUploading, setIsUploading] = useState(false);
+  const imageUrl = useRef("");
 
   const navigate = useNavigate();
 
@@ -26,55 +27,62 @@ export function JournalEditor() {
     if (journalId) {
       getItem(currentUser.uid, journalId).then((result) => {
         setTitle(result.title);
-        setEvent(result.journalEvent);
-        setTags(result.tags);
+        setEvent(result.event);
+        setTags(result.tag);
         setImages(result.imageSrc);
+        imageUrl.current = result.image_url
         console.log(result);
       });
     }
   }, []);
 
   function getImageSrc() {
-   if (imageSrc) {
-     if (journalId && imageFile) {
-      return URL.createObjectURL(imageSrc);
-    }else if(journalId && !imageFile){
-      return imageSrc;
-    }else{
-      return URL.createObjectURL(imageSrc);
+    if (imageSrc) {
+      if (journalId && imageFile) {
+        return URL.createObjectURL(imageSrc);
+      } else if (journalId && !imageFile) {
+        return imageSrc;
+      } else {
+        return URL.createObjectURL(imageSrc);
+      }
     }
-   }
   }
 
   async function uploadEventsHandler() {
-  if(title && events) { const formatter = new Date(Date.now());
+    if (title && events) {
 
-    const event = {
-      title: title,
-      date: formatter.toLocaleString(),
-      journalEvent: events,
-      ...(tags ? {tags: tags}:{}),
-    };
+      const event = {
+        title: title,
+        event: events,
+        tag: tags ? tags : ""
+      };
 
-    try {
-      setIsUploading(true);
-      if (journalId) {
-        if (imageFile) {
-          await updateItem(currentUser.uid,journalId, event,imageSrc,imageFile);
-      }else{
-        await updateItem(currentUser.uid,journalId,event)
+      try {
+        setIsUploading(true);
+        if (journalId) {
+          if (imageFile) {
+            await updateItem(
+              currentUser.id,
+              journalId,
+              event,
+              imageUrl.current,
+              imageFile
+            );
+          } else {
+            await updateItem(currentUser.id, journalId, event);
+          }
+        } else {
+          await uploadEvent(event, imageFile, currentUser.id);
+        }
+        console.log(event);
+        navigate("/entries");
+      } catch (error) {
+        alert(error);
+      } finally {
+        setIsUploading(false);
       }
-      } else {
-        await uploadEvent(event, imageFile, currentUser.uid);
-      }
-      console.log(event);
-      navigate("/entries");
-    } catch (error) {
-      alert(error);
-    } finally {
-      setIsUploading(false);
-    }}else{
-      alert("Title and Event cannot be empty")
+    } else {
+      alert("Title and Event cannot be empty");
     }
   }
 
@@ -137,7 +145,7 @@ export function JournalEditor() {
             setImageFile(e.target.files[0]);
             setImages(e.target.files[0]);
             setTimeout(() => {
-              console.log(imageFile,imageSrc);
+              console.log(imageFile, imageSrc);
             }, 1000);
           }}
           ref={selectFileRef}

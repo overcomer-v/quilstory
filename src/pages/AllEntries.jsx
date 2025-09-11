@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { AllJournalLists } from "./JournalsList";
 import { AllNotesLists } from "./NotesList";
 import { useNavigate } from "react-router-dom";
@@ -6,6 +6,17 @@ import { getDateType, monthArray } from "../utils/date-formatter";
 import { useAuth } from "../contexts/AuthContext";
 
 export function Entries({ listtype = "journals" }) {
+  useEffect(() => {
+    function getlastPage() {
+      return localStorage.getItem("last-entry-page") ?? "journals";
+    }
+    setType(getlastPage);
+  }, []);
+
+  function setLastPage(lastpage) {
+    localStorage.setItem("last-entry-page", lastpage);
+  }
+
   const [type, setType] = useState(listtype);
 
   return (
@@ -17,6 +28,7 @@ export function Entries({ listtype = "journals" }) {
           text={"Journals"}
           onClick={() => {
             setType("journals");
+            setLastPage("journals");
           }}
         ></SelectorButton>
         <SelectorButton
@@ -24,6 +36,7 @@ export function Entries({ listtype = "journals" }) {
           text={"Notes"}
           onClick={() => {
             setType("notes");
+            setLastPage("notes");
           }}
         ></SelectorButton>
         <div className="flex-grow flex justify-end">
@@ -61,22 +74,24 @@ export function Entries({ listtype = "journals" }) {
 
 function Greetings() {
   const date = new Date();
-  const { currentUser } = useAuth();
+  const { userName } = useAuth();
 
   function greeting() {
     if (date.getHours() < 12) {
       return "GoodMorning";
     } else if (date.getHours() > 11 && date.getHours() < 16) {
       return "GoodAfternoon";
-    } else if (date.getHours() > 16) {
+    } else if (date.getHours() >= 16) {
       return "GoodEvening";
+    } else {
+      return "Hey";
     }
   }
   return (
     <div className=" flex justify-between">
       <div>
         <h1 className="text-2xl">{greeting()}</h1>
-        <p className="opacity-50 font-light">{currentUser.displayName}</p>
+        <p className="opacity-50 font-light">{userName}</p>
       </div>
       <div className="flex gap-1 items-center font-light [&_p]:text-xs [&_p]:opacity-80  leading-none">
         <h1 className="md:text-4xl text-3xl">

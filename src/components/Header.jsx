@@ -2,7 +2,7 @@ import { useAuth } from "../contexts/AuthContext";
 import { useMediaQuery } from "../hooks/mediaQuery";
 
 export function Header({ setShowNav }) {
-  const { currentUser } = useAuth();
+  const { userName } = useAuth();
   const matches = useMediaQuery("(max-width: 768px)");
   function getCurrentNav() {
     // if (currentNav === "/") {
@@ -22,7 +22,7 @@ export function Header({ setShowNav }) {
   // }
 
   function getUsername() {
-    return currentUser ? currentUser.displayName : "Login";
+    return userName ? userName : "Login";
   }
 
   return matches ? (

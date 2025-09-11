@@ -11,15 +11,14 @@ import { getDateType, monthArray } from "../utils/date-formatter";
 
 export function Home() {
   const { events, isJournalLoading, loadEvents } = useJournalDatabaseManager();
-  const { notes, loadNotes, isNotesLoading } =
-    useNoteDatabaseManager();
-  const { loading, currentUser } = useAuth();
+  const { notes, loadNotes, isNotesLoading } = useNoteDatabaseManager();
+  const { loading, currentUser, userName } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
     if (currentUser) {
-      loadEvents(currentUser.uid);
-      loadNotes(currentUser.uid);
+      loadEvents(currentUser.id);
+      loadNotes(currentUser.id);
     }
     if (!loading && !currentUser) {
       navigate("/");
@@ -33,7 +32,7 @@ export function Home() {
     <Spinner isDark={false} className={"w-24 h-24"}></Spinner>
   ) : (
     <div className="page-animate">
-      <GreetingsAndDate name={currentUser?.displayName} message={"WELCOME"}></GreetingsAndDate>
+      <GreetingsAndDate name={userName} message={"WELCOME"}></GreetingsAndDate>
 
       <div className="mt-8 md:mt-12 flex flex-col gap-3">
         <Link
@@ -60,71 +59,81 @@ export function Home() {
             title={"Add Media"}
           ></QuickAccessItems>
         </div>
-
-        <section id="recent-journals" className="md:mt-12 mt-6">
-          <Subtitle label={"Recent Journals"}></Subtitle>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,500px))] gap-4">
-            {isJournalLoading ? (
-              <Spinner
-                isDark={true}
-                className={"h-12 w-12 m-auto opacity-30"}
-              ></Spinner>
-            ) : (
-              events
-                ?.slice(0, 5)
-                .map((e) => (
-                  <HorizontalItemCard
-                    title={e.title}
-                    date={e.date}
-                    prev={e.journalEvent}
-                    imgSrc={e.imageSrc}
-                    onClick={()=>{
-                       navigate(`/item-view/journal/${e.id}`)
-                    }}
-                  ></HorizontalItemCard>
-                ))
-            )}
-          </div>
-        </section>
-
-        <section id="recent-Notes" className="mt-12">
-          <Subtitle label={"Recent Notes"}></Subtitle>
-          <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,500px))] gap-3">
-            {isNotesLoading ? (
-              <Spinner
-                isDark={true}
-                className={"h-12 w-12 opacity-30 m-auto"}
-              ></Spinner>
-            ) : (
-              notes
-                ?.slice(0, 5)
-                .map((e) => (
-                  <HorizontalItemCard
-                    title={e.title}
-                    date={e.date}
-                    prev={e.note}
-                      onClick={()=>{
-                       navigate(`/item-view/note/${e.id}`)
-                    }}
-                  ></HorizontalItemCard>
-                ))
-            )}
-          </div>
-        </section>
+        <div>
+          <RecentJournalPreview />
+          <RecentNotesPreview />
+        </div>
       </div>
     </div>
   );
+
+  function RecentJournalPreview() {
+    return (
+      <section id="recent-journals" className="md:mt-12 mt-6">
+        <Subtitle label={"Recent Journals"}></Subtitle>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,500px))] gap-4">
+          {isJournalLoading ? (
+            <Spinner
+              isDark={true}
+              className={"h-12 w-12 m-auto opacity-30"}
+            ></Spinner>
+          ) : (
+            events?.slice(0, 5).map((e,i) => (
+              <HorizontalItemCard
+              key={i}
+                title={e.title}
+                date={e.created_at}
+                prev={e.event}
+                imgSrc={e.imageSrc}
+                onClick={() => {
+                  navigate(`/item-view/journal/${e.id}`);
+                }}
+              ></HorizontalItemCard>
+            ))
+          )}
+        </div>
+      </section>
+    );
+  }
+
+  function RecentNotesPreview() {
+    return (
+      <section id="recent-Notes" className="mt-12">
+        <Subtitle label={"Recent Notes"}></Subtitle>
+        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,500px))] gap-3">
+          {isNotesLoading ? (
+            <Spinner
+              isDark={true}
+              className={"h-12 w-12 opacity-30 m-auto"}
+            ></Spinner>
+          ) : (
+            notes?.slice(0, 5).map((e,i) => (
+              <HorizontalItemCard
+              key={i}
+                title={e.title}
+                date={e.created_at}
+                prev={e.note}
+                onClick={() => {
+                  navigate(`/item-view/note/${e.id}`);
+                }}
+              ></HorizontalItemCard>
+            ))
+          )}
+        </div>
+      </section>
+    );
+  }
 }
 
 function GreetingsAndDate({ name, message }) {
-
   const date = new Date(Date.now());
-
 
   return (
     <div className="flex justify-between mt-12">
       <div className="leading-none">
-        <h3 className="md:text-xs text-[0.6rem] opacity-60 md:mb-1">{message}</h3>
+        <h3 className="md:text-xs text-[0.6rem] opacity-60 md:mb-1">
+          {message}
+        </h3>
         <h1 className="text-xl md:text-3xl">{name}</h1>
       </div>
 

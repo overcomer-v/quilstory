@@ -12,19 +12,27 @@ export function AllJournalLists() {
     events,
     isJournalLoading,
     loadEvents,
-    journalError,
-    getImageUrl,
     deleteItem,
   } = useJournalDatabaseManager();
-  const isOnline = useInternetStatus();
   const { loading, currentUser } = useAuth();
   const navigate = useNavigate();
   const pageRef = useRef();
+  const [journalError,setJournalError] = useState();
 
   useEffect(() => {
-    if (currentUser) {
-      loadEvents(currentUser.uid);
+   async function loadJournals() {
+     if (currentUser) {
+      try {
+        await loadEvents(currentUser.id);
+      } catch (error) {
+        setJournalError(error);
+      }
     }
+   }
+
+   loadJournals();
+
+
   }, [currentUser, loading]);
 
   // !isOnline ? (
@@ -33,7 +41,7 @@ export function AllJournalLists() {
 
   async function onActions(action, id, imagePath) {
     if (action === "Delete") {
-      await deleteItem(currentUser.uid, id, imagePath);
+      await deleteItem(currentUser.id, id, imagePath);
     } else if (action === "Edit") {
       navigate(`/journal-editor/${id}`);
       console.log("Go to edit page");
@@ -54,7 +62,7 @@ export function AllJournalLists() {
   ) : (
     <div
       ref={pageRef}
-      className="grid md:grid-cols-[repeat(auto-fit,minmax(200px,250px))] grid-cols-1 md:gap-8 gap-3 justify-start items-start page-animate"
+      className="grid md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] grid-cols-1 md:gap-8 gap-3 justify-start items-start page-animate"
     >
       {events.map((e) => {
         // console.log(e)

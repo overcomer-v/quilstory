@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { logIn, signInWithGoogle, signUp } from "../utils/authenticate";
+import { logIn, signUp } from "../utils/authenticate";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Spinner } from "../components/Spinner";
@@ -37,14 +37,16 @@ export function SignInPage() {
 
     return (
       <div className="h-screen flex bg-neutral-100 justify-center items-center w-full">
-        <div className="md:w-[65%] w-[80%] max-w-md m-auto flex justify-center items-center flex-col gap-6">
+        <form className="md:w-[65%] w-[80%] max-w-md m-auto flex justify-center items-start flex-col [&>label]:font-light [&>label]:mt-6 [&>label]:mb-1 [&>label]:opacity-90 [&>label]:text-base ">
           <h2 className="text-left w-full text-3xl font-bold">Sign Up</h2>
+          <label htmlFor="username">Username</label>
           <input
+            name="username"
             onClick={() => {
               setAuthError(null);
             }}
-            className="rounded-md w-full h-12 px-2 border-neutral-300 border-[1px]"
-            placeholder="Username"
+            className="rounded-md w-full placeholder:font-light placeholder:text-sm h-12 px-2 border-neutral-300 border-[1px]"
+            placeholder="Enter username here"
             type="text"
             value={userName}
             onChange={(e) => {
@@ -52,12 +54,14 @@ export function SignInPage() {
             }}
           />
 
+          <label htmlFor="email">Email</label>
           <input
+            name="email"
             onClick={() => {
               setAuthError(null);
             }}
-            className="rounded-md w-full h-12 px-2 border-neutral-300 border-[1px]"
-            placeholder="Email"
+            className="rounded-md placeholder:font-light placeholder:text-sm w-full h-12 px-2 border-neutral-300 border-[1px]"
+            placeholder="Enter email here"
             type="email"
             value={email}
             onChange={(e) => {
@@ -65,12 +69,15 @@ export function SignInPage() {
               setAuthError(null);
             }}
           />
+
+          <label htmlFor="password">Password</label>
           <input
+            name="password"
             onClick={() => {
               setAuthError(null);
             }}
-            className="rounded-md h-12 w-full px-2 border-neutral-300 border-[1px] "
-            placeholder="Password"
+            className="rounded-md placeholder:font-light placeholder:text-sm h-12 w-full px-2 border-neutral-300 border-[1px] "
+            placeholder="Enter password"
             type="password"
             value={password}
             onChange={(e) => {
@@ -78,14 +85,16 @@ export function SignInPage() {
             }}
           />
           <button
-            className="px-6 py-2 w-full bg-blue-600 rounded-md text-white justify-center flex items-center gap-6"
-            onClick={async () => {
+            type="submit"
+            className="px-6 py-2 w-full my-6 bg-blue-600 rounded-md text-white justify-center flex items-center gap-6"
+            onClick={async (e) => {
+              e.preventDefault();
               if (userName && email && password) {
                 try {
                   setSpinnerLoading(true);
-                  return await signUp(email, password, userName, uploadEvent);
+                   await signUp(email, password, userName, uploadEvent);
                 } catch (error) {
-                  setAuthError(firebaseErrorMessagesMap[error.code]);
+                  setAuthError(error.message);
                 } finally {
                   setSpinnerLoading(false);
                 }
@@ -131,41 +140,43 @@ export function SignInPage() {
             <p>Already have an account ?</p>
             <i className="fa fa-arrow-right"></i>
           </Link>
-        </div>
+        </form>
       </div>
     );
   }
   function SignInLayout() {
     const [authError, setAuthError] = useState(null);
-    const { uploadEvent } = useJournalDatabaseManager();
-
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
     const [spinnerLoading, setSpinnerLoading] = useState(false);
 
     return (
       <div className="h-screen bg-neutral-100 flex w-full">
-        <div className="md:w-[65%] w-[80%] max-w-md m-auto flex justify-center items-center flex-col gap-6">
+        <div className="md:w-[65%] w-[80%] max-w-md m-auto flex justify-center items-start flex-col [&>label]:mt-6 [&>label]:mb-1 font-light">
           <h2 className="text-left w-full text-3xl font-bold">Sign In</h2>
 
+          <label htmlFor="email">Email</label>
           <input
+          name="email"
             onClick={() => {
               setAuthError(null);
             }}
-            className="rounded-md w-full h-12 px-2 border-neutral-300 border-[1px]"
-            placeholder="Email"
+            className="rounded-md w-full h-12 px-2 placeholder:font-light placeholder:text-sm border-neutral-300 border-[1px]"
+            placeholder="Enter email here"
             type="email"
             value={email}
             onChange={(e) => {
               setEmail(e.target.value);
             }}
           />
+          <label htmlFor="password">Password</label>
           <input
+          name="password"
             onClick={() => {
               setAuthError(null);
             }}
-            className="rounded-md h-12 w-full px-2 border-neutral-300 border-[1px] "
-            placeholder="Password"
+            className="rounded-md h-12 w-full px-2 placeholder:font-light placeholder:text-sm border-neutral-300 border-[1px] "
+            placeholder="Enter password here"
             type="password"
             value={password}
             onChange={(e) => {
@@ -173,14 +184,14 @@ export function SignInPage() {
             }}
           />
           <button
-            className="px-6 py-2 w-full bg-blue-600 rounded-md text-white justify-center flex items-center gap-6"
+            className="px-6 py-2 my-6 w-full bg-blue-600 rounded-md text-white justify-center flex items-center gap-6"
             onClick={async () => {
               if (email && password) {
                 try {
                   setSpinnerLoading(true);
-                  return await logIn(email, password);
+                   await logIn(email, password);
                 } catch (error) {
-                  setAuthError(firebaseErrorMessagesMap[error.code]);
+                  setAuthError(error.message);
                 } finally {
                   setSpinnerLoading(false);
                 }

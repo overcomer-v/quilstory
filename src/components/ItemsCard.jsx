@@ -29,7 +29,7 @@ export function ItemCard({ item, onAction, onClick, ref }) {
       onClick={onClick}
       className=" flex relative gap-3 h-fit bg-neutral-100 w-full cursor-pointer items-center p-4 rounded-2xl"
     >
-      <DateWidget itemDate={item.date}></DateWidget>
+      <DateWidget itemDate={item.created_at}></DateWidget>
       {showPopUp && (
         <CardPopUp ref={popUpRef}>
           <PopUpListItems
@@ -39,7 +39,7 @@ export function ItemCard({ item, onAction, onClick, ref }) {
               if (item.note) {
                 await onAction("Delete", item.id);
               } else {
-                await onAction("Delete", item.id, item.imageUrl);
+                await onAction("Delete", item.id, item.image_url);
               }
             }}
           ></PopUpListItems>
@@ -64,20 +64,20 @@ export function ItemCard({ item, onAction, onClick, ref }) {
         />
         <div className="flex justify-start flex-1 items-start flex-col gap-2 ">
           <h2>{item.title}</h2>
-          <p className="opacity-60 font-light text-xs line-clamp-3 h-12">
-            {item.journalEvent ?? item.note}
+          <p className="opacity-60 font-light text-xs line-clamp-3 h-12 w-full">
+            {item.event ?? item.note}
           </p>
         </div>
         <div className="flex items-center justify-between w-full">
           {" "}
           <span className="opacity-30 md:text-xs text-xs">
-            {new Date(item.date).getFullYear()}
+            {new Date(item.created_at).getFullYear()}
           </span>
           <i
             className="fa fa-ellipsis-v flex items-end h-fit opacity-50 rounded-full p-2 hover:bg-neutral-500 hover:text-white z-20"
             onClick={(e) => {
               e.stopPropagation();
-              ref.current.click();
+              // ref.current.click();
               setShowPopUp(!showPopUp);
             }}
           ></i>
