@@ -36,9 +36,9 @@ export function SignInPage() {
     const [spinnerLoading, setSpinnerLoading] = useState(false);
 
     return (
-      <div className="h-screen flex bg-neutral-100 justify-center items-center w-full">
-        <form className="md:w-[65%] w-[80%] max-w-md m-auto flex justify-center items-start flex-col [&>label]:font-light [&>label]:mt-6 [&>label]:mb-1 [&>label]:opacity-90 [&>label]:text-base ">
-          <h2 className="text-left w-full text-3xl font-bold">Sign Up</h2>
+      <div className="h-screen flex bg-neutral-100 justify-center items-center w-full page-animate">
+        <form className="md:w-[65%] w-[80%] max-w-md m-auto flex justify-center items-start flex-col [&>label]:font-light [&>label]:mt-4 [&>label]:mb-1 [&>label]:opacity-90 [&>label]:text-base ">
+          <h2 className="text-left w-full text-3xl font-bold mb-4">Sign Up</h2>
           <label htmlFor="username">Username</label>
           <input
             name="username"
@@ -46,7 +46,7 @@ export function SignInPage() {
               setAuthError(null);
             }}
             className="rounded-md w-full placeholder:font-light placeholder:text-sm h-12 px-2 border-neutral-300 border-[1px]"
-            placeholder="Enter username here"
+            placeholder=""
             type="text"
             value={userName}
             onChange={(e) => {
@@ -61,7 +61,7 @@ export function SignInPage() {
               setAuthError(null);
             }}
             className="rounded-md placeholder:font-light placeholder:text-sm w-full h-12 px-2 border-neutral-300 border-[1px]"
-            placeholder="Enter email here"
+            placeholder=""
             type="email"
             value={email}
             onChange={(e) => {
@@ -77,7 +77,6 @@ export function SignInPage() {
               setAuthError(null);
             }}
             className="rounded-md placeholder:font-light placeholder:text-sm h-12 w-full px-2 border-neutral-300 border-[1px] "
-            placeholder="Enter password"
             type="password"
             value={password}
             onChange={(e) => {
@@ -151,7 +150,7 @@ export function SignInPage() {
     const [spinnerLoading, setSpinnerLoading] = useState(false);
 
     return (
-      <div className="h-screen bg-neutral-100 flex w-full">
+      <div className="h-screen bg-neutral-100 flex w-full page-animate">
         <div className="md:w-[65%] w-[80%] max-w-md m-auto flex justify-center items-start flex-col [&>label]:mt-6 [&>label]:mb-1 font-light">
           <h2 className="text-left w-full text-3xl font-bold">Sign In</h2>
 
@@ -162,7 +161,7 @@ export function SignInPage() {
               setAuthError(null);
             }}
             className="rounded-md w-full h-12 px-2 placeholder:font-light placeholder:text-sm border-neutral-300 border-[1px]"
-            placeholder="Enter email here"
+            
             type="email"
             value={email}
             onChange={(e) => {
@@ -176,7 +175,7 @@ export function SignInPage() {
               setAuthError(null);
             }}
             className="rounded-md h-12 w-full px-2 placeholder:font-light placeholder:text-sm border-neutral-300 border-[1px] "
-            placeholder="Enter password here"
+           
             type="password"
             value={password}
             onChange={(e) => {

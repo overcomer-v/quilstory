@@ -3,6 +3,7 @@ import { Link, useLocation, useNavigate } from "react-router-dom";
 import { auth } from "../utils/mfirebase";
 import { signOut } from "firebase/auth";
 import { useMediaQuery } from "../hooks/mediaQuery";
+import { supabase } from "../utils/supabase-client";
 
 export function NavBar({ showNav, setShowNav }) {
   const navigate = useNavigate();
@@ -19,16 +20,25 @@ export function NavBar({ showNav, setShowNav }) {
         setShowNav(false);
       }
     }
-   if (showNav) {
-     setTimeout(() => {
-      document.addEventListener("click", handleOffsiteClick);
-     }, 100);
-   }
+    if (showNav) {
+      setTimeout(() => {
+        document.addEventListener("click", handleOffsiteClick);
+      }, 100);
+    }
 
     return () => {
       document.removeEventListener("click", handleOffsiteClick);
     };
   }, [showNav]);
+
+  const signOutUser = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) {
+      console.error("Error signing out:", error.message);
+    } else {
+      console.log("User signed out successfully");
+    }
+  };
 
   return (
     <nav
@@ -38,42 +48,38 @@ export function NavBar({ showNav, setShowNav }) {
    !matches || showNav ? " left-0" : " -left-60"
  } transition-all ease-in-out duration-500 pr-2 pl-2 py-8 border-r-[1px]`}
     >
-      <div className="flex items-center justify-between ml-9 mb-3">
+      <div className="flex items-center gap-3 n ml-9 mb-3">
         {" "}
+        <i className="fa fa-pencil -rotate-90 rounded-md shadow-sm bg-blue-600 text-white p-[0.4rem] text-xs"></i>
         <h1 className="text-blue-600 text-2xl font-bold">QuilStory</h1>
-        {/* <i
-          className="fa fa-xmark mr-6 text-lg flex md:hidden opacity-50"
-          onClick={() => {
-            setShowNav(false);
-          }}
-        ></i> */}
       </div>
-      <div className="gap-1 flex flex-col">
-        <h5 className="opacity-30 text-xs ml-9 mt-4 mb-4">Personal</h5>
-        <NavButton
-          label={"Home"}
-          iconClass={"fa-home"}
-          to={"/home"}
-        ></NavButton>
+      <div className="flex justify-between h-full flex-col items-start w-full">
+        <div className="gap-1 flex flex-col w-full">
+          <h5 className="opacity-30 text-xs ml-9 mt-4 mb-4">Personal</h5>
+          <NavButton
+            label={"Home"}
+            iconClass={"fa-home"}
+            to={"/home"}
+          ></NavButton>
 
-        <NavButton
-          label={"Entries"}
-          iconClass={"fa-bullseye"}
-          to={"/entries"}
-        ></NavButton>
+          <NavButton
+            label={"Entries"}
+            iconClass={"fa-bullseye"}
+            to={"/entries"}
+          ></NavButton>
 
-        <NavButton
-          label={"Editor"}
-          iconClass={"fa-pen"}
-          to={"/editor"}
-        ></NavButton>
-        {/* <NavButton
+          <NavButton
+            label={"Editor"}
+            iconClass={"fa-pen"}
+            to={"/editor"}
+          ></NavButton>
+          {/* <NavButton
           label={"All Medias"}
           iconClass={"fa-images"}
           to={"/all-medias"}
         ></NavButton> */}
 
-        <h5 className="opacity-40 ml-9 text-xs mb-4 mt-6">General</h5>
+          {/* <h5 className="opacity-40 ml-9 text-xs mb-4 mt-6">General</h5>
         <NavButton
           label={"About Us"}
           iconClass={"fa-bullseye"}
@@ -83,16 +89,17 @@ export function NavBar({ showNav, setShowNav }) {
           label={"Contact Us"}
           iconClass={"fa-bullseye"}
           to={"/contact-us"}
-        ></NavButton>
+        ></NavButton> */}
+        </div>
         <button
           className="  text-blue-500 flex gap-2 items-center pl-9 mt-8"
           onClick={async () => {
-            await signOut(auth);
+            await signOutUser();
             navigate("/");
           }}
         >
+          <i className="fa fa-sign-out rotate-180"></i>
           <p>Sign Out</p>
-          <i className="fa fa-sign-out"></i>
         </button>
       </div>
     </nav>
@@ -111,7 +118,7 @@ export function NavBar({ showNav, setShowNav }) {
       : "text-black opacity-40";
     const borderColor = isActive ? "bg-blue-500 " : "bg-transparent";
     const textOpacity = isActive ? "opacity-100" : "opacity-50";
-    const bg = isActive ? "bg-[rgb(200,200,200,0.2)]" : "";
+    const bg = isActive ? "bg-[rgb(200,200,200,0.4)]" : "";
 
     return (
       <Link

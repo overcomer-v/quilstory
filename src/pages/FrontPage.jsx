@@ -56,7 +56,7 @@ export function FrontPage() {
         </div>
         <section
           id="why-choose-us"
-          className="flex-col gap-12 flex items-start mt-24 px-16"
+          className="flex-col gap-12 flex items-start mt-24 px-8"
         >
           <div className="text-left">
             <h2 className=" bg-blue-400 w-fit px-3 text-white py-1 rounded-sm text-xs mb-1">
@@ -87,9 +87,42 @@ export function FrontPage() {
             ></ChooseCard>
           </div>
         </section>
+        <footer className="flex md:flex-row flex-col text-white gap-8 justify-center md:justify-between items-center mt-8 px-8 py-10 bg-[rgb(10,20,35)]">
+        <div className="flex items-center gap-6">
+            <h1 className="text-xl">Quilstory</h1>
+          <div className=" flex border-l-2 border-l-white pl-6 flex-col text-xs font-light opacity-35">
+            <span>@ 2025</span>
+            <span>Built by Atoyeje Overcomer</span>
+            <span>{"Tech stacks -> React + Supabase"}</span>
+          </div>
+
+        </div>
+          <div className="flex gap-4">
+            <SocialLinks
+            iconData={"fab fa-google"}
+            to={"mailto:atoyejeovercomer2@gmail.com?subject=Hiring%20Inquiry"}
+          ></SocialLinks>
+          <SocialLinks
+            iconData={"fab fa-github"}
+            to={"https://github.com/overcomer-v"}
+          ></SocialLinks>
+          <SocialLinks
+            iconData={"fab fa-twitter"}
+            to={"https://x.com/victor_atoyeje_?s=09"}
+          ></SocialLinks>
+          </div>
+        </footer>
       </div>
     </div>
   );
+
+  function SocialLinks({ iconData, to }) {
+  return (
+    <a href={to} className="opacity-50">
+      <i className={`${iconData} `}></i>
+    </a>
+  );
+}
 
   // function Dialog({ edit }) {
   //   return (
@@ -123,7 +156,7 @@ export function FrontPage() {
             SignUp
           </button>
           <button
-            className="md:px-6 px-4 py-2 bg-blue-500 rounded-xl text-white"
+            className="md:px-6 px-4 py-2 bg-blue-600 rounded-xl text-white"
             onClick={() => {
               navigate("/sign-in/sign-in");
             }}
