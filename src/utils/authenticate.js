@@ -1,11 +1,4 @@
-import {
-  createUserWithEmailAndPassword,
-  signInWithEmailAndPassword,
-  signInWithPopup,
-  updateProfile,
-} from "firebase/auth";
-import { auth, gProvider } from "./mfirebase";
-import JournalEvent from "../models/Event";
+
 import { supabase } from "./supabase-client";
 
 const currentDate = Date.now().toLocaleString("en-US", {
@@ -27,20 +20,14 @@ const demoJournal = {
   event: demoEvent,
 };
 
-export async function signUp(email, password, userName) {
-  try {
-    const { data, error } = await supabase.auth.signUp({
-      password: password,
-      email: email,
-    });
+const demoNote = {
+  title:"Welcome",
+  note:demoEvent
+}
 
-    if (error) {
-      throw error;
-    }
 
-    console.l
-
-    const { error: profileError } = await supabase
+export async function newUserRites(userName) {
+   const { error: profileError } = await supabase
       .from("profiles")
       .insert([{ username: userName }]);
     if (profileError) {
@@ -54,20 +41,56 @@ export async function signUp(email, password, userName) {
       throw journalError;
     }
 
+    const { error: notesError } = await supabase
+      .from("notes")
+      .insert([demoNote]);
+    if (notesError) {
+      throw notesError;
+    }
+}
 
-    console.log("successfull")
+export async function signUp(email, password, userName) {
+  try {
+    const { data, error } = await supabase.auth.signUp({
+      password: password,
+      email: email,
+    });
+
+    if (error) {
+      throw error;
+    }
+
+   await newUserRites(userName);
+
+    console.log("successfull");
     console.log(data.user);
   } catch (error) {
     console.error(error);
     throw error;
   }
-
-  // await uploadCallback(demoJournal.toObject(),userCredential.user.uid);
-  //  return updateProfile(userCredential.user, { displayName: userName });
 }
+
+export async function googleSignIn() {
+  try {
+    const { error:signInError } = await supabase.auth.signInWithOAuth({
+      provider: "google",
+    });
+
+    if (signInError) {
+      throw signInError;
+    }
+
+  } catch (error) {
+    console.error(error);
+    throw error;
+  }
+}
+
+// await uploadCallback(demoJournal.toObject(),userCredential.user.uid);
+//  return updateProfile(userCredential.user, { displayName: userName });
 export async function logIn(email, password) {
   try {
-    const { data,error } = await supabase.auth.signInWithPassword({
+    const { data, error } = await supabase.auth.signInWithPassword({
       email,
       password,
     });
@@ -76,8 +99,7 @@ export async function logIn(email, password) {
       throw error;
     }
 
-    console.log("Successfull",data);
-
+    console.log("Successfull", data);
   } catch (error) {
     console.error(error);
     throw error;

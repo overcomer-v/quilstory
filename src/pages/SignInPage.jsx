@@ -1,9 +1,8 @@
 import { useEffect, useState } from "react";
-import { logIn, signUp } from "../utils/authenticate";
+import { googleSignIn, logIn, signUp } from "../utils/authenticate";
 import { Link, useNavigate, useParams } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { Spinner } from "../components/Spinner";
-import { firebaseErrorMessagesMap } from "../utils/firebaseErrorMap";
 import { useJournalDatabaseManager } from "../hooks/dbManager";
 
 export function SignInPage() {
@@ -17,14 +16,19 @@ export function SignInPage() {
     }
   }, [currentUser, loading]);
 
-  switch (type) {
-    case "sign-up":
-      return <SignUpLayout></SignUpLayout>;
-    case "sign-in":
-      return <SignInLayout></SignInLayout>;
-    default:
-      break;
-  }
+  return (
+    <div className="relative">
+      <div className="z-[100] relative ">
+        {type === "sign-up" && <SignUpLayout></SignUpLayout>}
+        {type === "sign-in" && <SignInLayout></SignInLayout>}
+      </div>
+      <img
+        className="fixed top-0 bottom-0 opacity-5 right-0 left-0 w-full h-full object-cover z-10"
+        src="public\images\d74be058-2c2f-4809-b5da-64f08e9d374c.jpeg"
+        alt=""
+      />
+    </div>
+  );
 
   function SignUpLayout() {
     const { uploadEvent } = useJournalDatabaseManager();
@@ -36,16 +40,21 @@ export function SignInPage() {
     const [spinnerLoading, setSpinnerLoading] = useState(false);
 
     return (
-      <div className="h-screen flex bg-neutral-100 justify-center items-center w-full page-animate">
-        <form className="md:w-[65%] w-[80%] max-w-md m-auto flex justify-center items-start flex-col [&>label]:font-light [&>label]:mt-4 [&>label]:mb-1 [&>label]:opacity-90 [&>label]:text-base ">
-          <h2 className="text-left w-full text-3xl font-bold mb-4">Sign Up</h2>
+      <div className="h-screen flex justify-center items-center w-full page-animate">
+        <form className="md:w-[65%] w-[75%] max-w-[26rem] m-auto flex justify-center items-start flex-col [&>input]:bg-opacity-70 [&>input]:py-3 [&>input]:rounded-lg [&>input]:bg-neutral-100 [&>label]:font-light [&>label]:mt-4 [&>label]:mb-1 [&>label]:opacity-90 [&>label]:text-base ">
+          <h1 className="mb-4 flex flex-col">
+            <h2 className="text-left w-full text-4xl font-bold">
+              Sign Up
+            </h2>
+            <p className="font-light text-xs opacity-30">Let's sign you up to continue</p>
+          </h1>
           <label htmlFor="username">Username</label>
           <input
             name="username"
             onClick={() => {
               setAuthError(null);
             }}
-            className="rounded-md w-full placeholder:font-light placeholder:text-sm h-12 px-2 border-neutral-300 border-[1px]"
+            className=" w-full placeholder:font-light placeholder:text-sm px-3 border-neutral-300 border-[1px]"
             placeholder=""
             type="text"
             value={userName}
@@ -60,7 +69,7 @@ export function SignInPage() {
             onClick={() => {
               setAuthError(null);
             }}
-            className="rounded-md placeholder:font-light placeholder:text-sm w-full h-12 px-2 border-neutral-300 border-[1px]"
+            className=" placeholder:font-light placeholder:text-sm w-full px-3 border-neutral-300 border-[1px]"
             placeholder=""
             type="email"
             value={email}
@@ -76,7 +85,7 @@ export function SignInPage() {
             onClick={() => {
               setAuthError(null);
             }}
-            className="rounded-md placeholder:font-light placeholder:text-sm h-12 w-full px-2 border-neutral-300 border-[1px] "
+            className=" placeholder:font-light placeholder:text-sm w-full px-3 border-neutral-300 border-[1px] "
             type="password"
             value={password}
             onChange={(e) => {
@@ -85,13 +94,13 @@ export function SignInPage() {
           />
           <button
             type="submit"
-            className="px-6 py-2 w-full my-6 bg-blue-600 rounded-md text-white justify-center flex items-center gap-6"
+            className="px-6 py-3 w-full my-6 bg-blue-600 rounded-md text-white justify-center flex items-center gap-6"
             onClick={async (e) => {
               e.preventDefault();
               if (userName && email && password) {
                 try {
                   setSpinnerLoading(true);
-                   await signUp(email, password, userName, uploadEvent);
+                  await signUp(email, password, userName, uploadEvent);
                 } catch (error) {
                   setAuthError(error.message);
                 } finally {
@@ -107,22 +116,27 @@ export function SignInPage() {
               className={`h-4 w-4 ${spinnerLoading ? "" : "hidden"}`}
             ></Spinner>
           </button>
-          {/* <button 
-           onClick={ async () => {
-             try {
-                  setSpinnerLoading(true);
-                  return await signInWithGoogle(uploadEvent);
-                } catch (error) {
-                  setAuthError(firebaseErrorMessagesMap[error.code]);
-                } finally {
-                  setSpinnerLoading(false);
-                }
-              
+          <button
+            onClick={async (e) => {
+              e.preventDefault();
+              try {
+                setSpinnerLoading(true);
+                await googleSignIn();
+              } catch (error) {
+                setAuthError(error.message);
+              } finally {
+                setSpinnerLoading(false);
+              }
             }}
-          className="px-6 py-2 w-full items-center justify-center flex gap-2 rounded-md border-[1px] border-neutral-300">
-            <i className="fab fa-google text-blue-700"></i>
+            className="px-6 py-3 mb-6 w-full items-center justify-center flex gap-2 rounded-md border-[1px] border-neutral-300"
+          >
+            <img
+              className="w-4 h-4"
+              src="public\images\icons8-google-50.png"
+              alt=""
+            />
             <p>Sign up with Google </p>
-          </button> */}
+          </button>
 
           <p
             className={`w-full text-left text-sm font-light text-red-500 ${
@@ -133,7 +147,7 @@ export function SignInPage() {
           </p>
 
           <Link
-            className="flex gap-2 text-blue-500 text-sm items-center justify-start w-full"
+            className="flex gap-2 text-blue-500 font-light text-sm items-center justify-start w-full"
             to={"/sign-in/sign-in"}
           >
             <p>Already have an account ?</p>
@@ -150,18 +164,20 @@ export function SignInPage() {
     const [spinnerLoading, setSpinnerLoading] = useState(false);
 
     return (
-      <div className="h-screen bg-neutral-100 flex w-full page-animate">
-        <div className="md:w-[65%] w-[80%] max-w-md m-auto flex justify-center items-start flex-col [&>label]:mt-6 [&>label]:mb-1 font-light">
-          <h2 className="text-left w-full text-3xl font-bold">Sign In</h2>
-
+      <div className="h-screen flex w-full page-animate">
+        <div className="md:w-[65%] w-[80%] max-w-[26rem] m-auto flex justify-center items-start flex-col [&>label]:mt-6 [&>label]:mb-1 font-light">
+  <h2 className="text-left w-full text-4xl font-bold">
+              Sign In
+            </h2>
+            <p className="font-light text-xs opacity-30">Let's sign you in to continue</p>
+          
           <label htmlFor="email">Email</label>
           <input
-          name="email"
+            name="email"
             onClick={() => {
               setAuthError(null);
             }}
             className="rounded-md w-full h-12 px-2 placeholder:font-light placeholder:text-sm border-neutral-300 border-[1px]"
-            
             type="email"
             value={email}
             onChange={(e) => {
@@ -170,12 +186,11 @@ export function SignInPage() {
           />
           <label htmlFor="password">Password</label>
           <input
-          name="password"
+            name="password"
             onClick={() => {
               setAuthError(null);
             }}
             className="rounded-md h-12 w-full px-2 placeholder:font-light placeholder:text-sm border-neutral-300 border-[1px] "
-           
             type="password"
             value={password}
             onChange={(e) => {
@@ -183,12 +198,12 @@ export function SignInPage() {
             }}
           />
           <button
-            className="px-6 py-2 my-6 w-full bg-blue-600 rounded-md text-white justify-center flex items-center gap-6"
+            className="px-6 py-3 my-6 w-full bg-blue-600 rounded-md text-white justify-center flex items-center gap-6"
             onClick={async () => {
               if (email && password) {
                 try {
                   setSpinnerLoading(true);
-                   await logIn(email, password);
+                  await logIn(email, password);
                 } catch (error) {
                   setAuthError(error.message);
                 } finally {
@@ -204,20 +219,28 @@ export function SignInPage() {
               className={`h-4 w-4 ${spinnerLoading ? "" : "hidden"}`}
             ></Spinner>
           </button>
-          {/* <button
-            onClick={ async () => {
-               try {
-                  return await signInWithGoogle(uploadEvent);
-                } catch (error) {
-                  setAuthError(firebaseErrorMessagesMap[error.code]);
-                } 
-              
+
+          <button
+            onClick={async (e) => {
+              e.preventDefault();
+              try {
+                setSpinnerLoading(true);
+                await googleSignIn();
+              } catch (error) {
+                setAuthError(error.message);
+              } finally {
+                setSpinnerLoading(false);
+              }
             }}
-            className="px-6 py-2 w-full items-center justify-center flex gap-2 rounded-md border-[1px] border-neutral-300"
+            className="px-6 py-3 mb-6 w-full items-center justify-center flex gap-2 rounded-md border-[1px] border-neutral-300"
           >
-            <i className="fab fa-google text-blue-700"></i>
+            <img
+              className="w-4 h-4"
+              src="public\images\icons8-google-50.png"
+              alt=""
+            />
             <p>Sign In with Google </p>
-          </button> */}
+          </button>
 
           <p
             className={`w-full text-left text-sm font-light text-red-500 ${
@@ -228,7 +251,7 @@ export function SignInPage() {
           </p>
 
           <Link
-            className="flex gap-2 text-blue-500 text-sm items-center justify-start w-full"
+            className="flex gap-2 text-blue-500 font-light text-sm items-center justify-start w-full"
             to={"/sign-in/sign-up"}
           >
             <p>Create New Account</p>

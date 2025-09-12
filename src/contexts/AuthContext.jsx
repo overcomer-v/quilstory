@@ -14,19 +14,48 @@ export function AuthContextProvider({ children }) {
     setLoading(true);
     supabase.auth.getSession().then(({ data }) => {
       setUser(data.session.user ?? null);
-      supabase
+       const user = data?.session?.user;
+        setUser(user ?? null);
+
+        if (user) {
+        const provider = user.identities?.[0]?.provider;
+
+        if(provider === "google"){
+          setUserName(user.user_metadata.full_name);
+        }else if(provider === "email"){
+            supabase
         .from("profiles")
         .select("username")
-        .eq("id", data.session.user.id)
+        .eq("id", user.id)
         .then(({data}) => {
           setUserName(data[0].username);
         });
+        }}
       setLoading(false);
     });
 
     const { data: listener } = supabase.auth.onAuthStateChange(
       (_event, session) => {
         setUser(session?.user ?? null);
+
+          const user = session?.user;
+        setUser(user ?? null);
+
+        if (user) {
+        const provider = user.identities?.[0]?.provider;
+
+        if(provider === "google"){
+          setUserName(user.user_metadata.full_name);
+        }else if(provider === "email"){
+            supabase
+        .from("profiles")
+        .select("username")
+        .eq("id", user.id)
+        .then(({data}) => {
+          setUserName(data[0].username);
+        });
+        }}
+
         setLoading(false);
         console.log(session?.user);
       }

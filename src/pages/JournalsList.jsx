@@ -62,7 +62,7 @@ export function AllJournalLists() {
   ) : (
     <div
       ref={pageRef}
-      className="grid md:grid-cols-[repeat(auto-fit,minmax(200px,1fr))] grid-cols-1 md:gap-8 gap-3 justify-start items-start page-animate"
+      className="grid md:grid-cols-[repeat(auto-fit,minmax(200px,300px))] grid-cols-1 md:gap-8 gap-3 justify-start items-start page-animate"
     >
       {events.map((e) => {
         // console.log(e)

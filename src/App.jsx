@@ -19,8 +19,9 @@ import { Entries } from "./pages/AllEntries";
 import { Editor } from "./pages/Editor";
 import { NotesEditor } from "./pages/NotesEditor";
 import { ItemView } from "./pages/ItemView";
-
+import { newUserRites } from "./utils/authenticate";
 function App() {
+  
   return (
     <AuthContextProvider>
       <HashRouter>
@@ -34,12 +35,15 @@ function App() {
               path="/editor/:entryType?"
               element={<Editor></Editor>}
             ></Route>
-            <Route path="/item-view/:type/:itemId" element = {<ItemView></ItemView>}></Route>
+            <Route
+              path="/item-view/:type/:itemId"
+              element={<ItemView></ItemView>}
+            ></Route>
             <Route
               path="/journal-editor/:journalId?"
               element={<JournalEditor></JournalEditor>}
             ></Route>
-             <Route
+            <Route
               path="/note-editor/:noteId?"
               element={<NotesEditor></NotesEditor>}
             ></Route>
@@ -56,15 +60,35 @@ function App() {
   );
 
   function UserLayout() {
-    const { loading, currentUser } = useAuth();
+    const { loading, currentUser,userName } = useAuth();
     const [showNav, setShowNav] = useState(false);
     const navigate = useNavigate();
+
+  async function addDemoEntries() {
+   const createdAt = Math.floor(new Date(currentUser.created_at).getTime() / 1000)      // seconds
+  const lastSignInAt = Math.floor(new Date(currentUser.last_sign_in_at).getTime() / 1000)
+
+  // Allow a difference of up to 5 seconds
+  const diff = Math.abs(lastSignInAt - createdAt)
+  const isFirstLogin = diff <= 5
+
+
+    if (isFirstLogin) {
+      await newUserRites(currentUser.user_metadata.full_name);
+    } else {
+      console.log("Returning user — proceed normally");
+    }
+  }
+
+  useEffect(() => {
+    addDemoEntries();
+  }, [userName]);
+
 
     useEffect(() => {
       if (!loading && !currentUser) {
         navigate("/");
       }
-
     }, [loading]);
 
     return loading ? (

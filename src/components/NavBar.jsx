@@ -48,14 +48,14 @@ export function NavBar({ showNav, setShowNav }) {
    !matches || showNav ? " left-0" : " -left-60"
  } transition-all ease-in-out duration-500 pr-2 pl-2 py-8 border-r-[1px]`}
     >
-      <div className="flex items-center gap-3 n ml-9 mb-3">
+      <div className="flex items-center gap-2 ml-3 mb-3">
         {" "}
-        <i className="fa fa-pencil -rotate-90 rounded-md shadow-sm bg-blue-600 text-white p-[0.4rem] text-xs"></i>
-        <h1 className="text-blue-600 text-2xl font-bold">QuilStory</h1>
+        <i className="fa fa-pencil -rotate-90 rounded-md shadow-sm bg-blue-600 text-white p-[0.4rem] text-[0.6rem]"></i>
+        <h1 className="text-blue-600 text-xl font-bold">QuilStory</h1>
       </div>
       <div className="flex justify-between h-full flex-col items-start w-full">
         <div className="gap-1 flex flex-col w-full">
-          <h5 className="opacity-30 text-xs ml-9 mt-4 mb-4">Personal</h5>
+          <h5 className="opacity-30 text-xs ml-9 mt-4 mb-1">Personal</h5>
           <NavButton
             label={"Home"}
             iconClass={"fa-home"}
