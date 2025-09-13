@@ -87,7 +87,7 @@ function App() {
 
     useEffect(() => {
       if (!loading && !currentUser) {
-        navigate("/");
+        console.log("");
       }
     }, [loading]);
 
