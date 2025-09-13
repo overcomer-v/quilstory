@@ -71,9 +71,13 @@ export async function signUp(email, password, userName) {
 }
 
 export async function googleSignIn() {
+
+  const localRedirect = "http://localhost:3000/*";
+
   try {
     const { error:signInError } = await supabase.auth.signInWithOAuth({
       provider: "google",
+      options:{redirectTo:"https://quilstory.vercel.app/#/home"}
     });
 
     if (signInError) {
