@@ -24,7 +24,7 @@ export function SignInPage() {
       </div>
       <img
         className="fixed top-0 bottom-0 opacity-5 right-0 left-0 w-full h-full object-cover z-10"
-        src="public\images\d74be058-2c2f-4809-b5da-64f08e9d374c.jpeg"
+        src="/images/d74be058-2c2f-4809-b5da-64f08e9d374c.jpeg"
         alt=""
       />
     </div>
@@ -132,7 +132,7 @@ export function SignInPage() {
           >
             <img
               className="w-4 h-4"
-              src="public\images\icons8-google-50.png"
+              src="/images/icons8-google-50.png"
               alt=""
             />
             <p>Sign up with Google </p>
@@ -236,7 +236,7 @@ export function SignInPage() {
           >
             <img
               className="w-4 h-4"
-              src="public\images\icons8-google-50.png"
+              src="/images/icons8-google-50.png"
               alt=""
             />
             <p>Sign In with Google </p>
