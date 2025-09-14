@@ -57,8 +57,8 @@ export function NotesEditor() {
       ></Spinner>
     </div>
   ) : (
-    <div className=" mt-6">
-      <form className="flex flex-col page-animate font-light gap-6 [&_input]:border-2 [&_input]:border-neutral-300">
+    <div className=" mt-6 h-full">
+      <form className="flex h-[90vh] flex-col  page-animate font-light gap-3 md:gap-6 [&_input]:border-[1px] [&_input]:border-neutral-300">
         <input
           className="px-4 py-3 rounded-lg w-[80%] md:w-[60%] text-sm max-w-[600px]"
           type="text"
@@ -71,8 +71,8 @@ export function NotesEditor() {
         />
 
         <textarea
-          rows={12}
-          className="border-[1px] border-neutral-300 p-4 rounded-lg text-sm max-w-[900px]"
+          
+          className="border-[1px] border-neutral-300 p-4 flex-1 rounded-lg text-sm max-w-[900px]"
           name="journal-i"
           id="notes-i"
           placeholder="Event"
@@ -82,7 +82,7 @@ export function NotesEditor() {
           }}
         ></textarea>
 
-        <div className="flex justify-end">
+        <div className="flex justify-end mt-4">
           <button
             type="button"
             onClick={() => {
