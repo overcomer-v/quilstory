@@ -33,14 +33,14 @@ export function Header({ setShowNav }) {
 
   function SmallScreensHeader({ setShowNav }) {
     return (
-      <header className="flex shadow-md sticky top-0 shadow-bg justify-between items-center py-4 mx-2 px-4 z-[900] rounded-2xl mt-4 mb-8 text-lg ">
+      <header className="flex shadow-md sticky top-0 shadow-bg justify-between items-center py-3 mx-2 px-4 z-[900] rounded-lg mt-2 md:mb-8 mb-4 text-lg ">
         <i
           className="fa fa-bars"
           onClick={() => {
             setShowNav((e) => !e);
           }}
         ></i>
-        <h1 className="text-blue-600 text-2xl font-bold">
+        <h1 className="text-blue-600 text-xl font-bold">
           QuilStory
         </h1>
         <div className="flex gap-4">

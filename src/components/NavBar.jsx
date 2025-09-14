@@ -53,12 +53,12 @@ export function NavBar({ showNav, setShowNav }) {
         <i className="fa fa-pencil -rotate-90 rounded-md shadow-sm bg-neutral-300 text-white p-[0.4rem] text-[0.6rem]"></i>
         <h1 className="text-blue-600 text-xl font-bold">QuilStory</h1>
       </div>
-      <div className="flex justify-between h-[90%] flex-col items-start w-full">
+      <div className="flex h-[90%] flex-col items-start w-full">
         <div className="gap-1 flex flex-col w-full">
-          <h5 className="opacity-30 text-xs ml-9 mt-4 mb-1 flex gap-4 items-center">
+          <div className="opacity-30 text-xs ml-9 mt-4 mb-1 flex gap-4 items-center">
             <p>Personal</p>
             <div className="w-[40%] bg-neutral-400 h-[1px]"></div>
-          </h5>
+          </div>
           <NavButton
             label={"Home"}
             iconClass={"fa-home"}
@@ -94,14 +94,18 @@ export function NavBar({ showNav, setShowNav }) {
           to={"/contact-us"}
         ></NavButton> */}
         </div>
+         <div className="opacity-30 w-full text-xs ml-9 mt-12 mb-1 flex gap-4 items-center">
+            <p>General</p>
+            <div className="w-[40%] bg-neutral-400 h-[1px]"></div>
+          </div>
         <button
-          className="  text-blue-500 flex gap-2 items-center pl-9 mt-8"
+          className="  text-blue-500 flex gap-2 items-center pl-9 mt-4 text-sm"
           onClick={async () => {
             await signOutUser();
             navigate("/");
           }}
         >
-          <i className="fa fa-sign-out rotate-180"></i>
+          <i className="fa fa-sign-out text-sm rotate-180"></i>
           <p>Sign Out</p>
         </button>
       </div>
