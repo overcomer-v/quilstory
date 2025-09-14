@@ -90,8 +90,8 @@ function Greetings() {
   return (
     <div className=" flex justify-between">
       <div>
-        <h1 className="text-2xl">{greeting()}</h1>
-        <p className="opacity-50 font-light">{userName}</p>
+        <h1 className="md:text-2xl text-xl">{greeting()}</h1>
+        <p className="opacity-50 font-light text-sm md:text-base">{userName}</p>
       </div>
       <div className="flex gap-1 items-center font-light [&_p]:text-xs [&_p]:opacity-80  leading-none">
         <h1 className="md:text-4xl text-3xl">
@@ -116,7 +116,7 @@ function FloatingActionButton({ text, type }) {
       onClick={() => {
         navigate(type === "journals" ? "/editor/journals" : "/editor/notes");
       }}
-      className="fa-bounce shadow-md p-3 flex right-5 w-fit bottom-5 rounded-lg items-center shadow-bg gap-2"
+      className="fa-bounce shadow-md md:p-3 p-2 flex right-5 w-fit bottom-5 rounded-lg items-center shadow-bg gap-2"
     >
       <i className="fa fa-plus text-blue-600 text-xl"></i>
       <p className="opacity-70 text-sm md:flex hidden">{text}</p>

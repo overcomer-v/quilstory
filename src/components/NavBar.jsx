@@ -55,7 +55,7 @@ export function NavBar({ showNav, setShowNav }) {
       </div>
       <div className="flex h-[90%] flex-col items-start w-full">
         <div className="gap-1 flex flex-col w-full">
-          <div className="opacity-30 text-xs ml-9 mt-4 mb-1 flex gap-4 items-center">
+          <div className="opacity-30 text-xs ml-9 mt-4 mb-3 flex gap-4 items-center">
             <p>Personal</p>
             <div className="w-[40%] bg-neutral-400 h-[1px]"></div>
           </div>

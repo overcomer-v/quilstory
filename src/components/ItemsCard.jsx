@@ -27,7 +27,7 @@ export function ItemCard({ item, onAction, onClick, ref }) {
   return (
     <div
       onClick={onClick}
-      className=" flex relative gap-3 h-fit bg-neutral-100 w-full cursor-pointer items-center p-4 rounded-2xl"
+      className=" flex shadow-sm relative gap-3 h-fit bg-neutral-100 w-full cursor-pointer items-center p-4 rounded-2xl"
     >
       <DateWidget itemDate={item.created_at}></DateWidget>
       {showPopUp && (
@@ -89,7 +89,7 @@ export function ItemCard({ item, onAction, onClick, ref }) {
 
 export function HorizontalItemCard({ imgSrc, title, prev, date, onClick }) {
   return (
-    <div onClick={onClick} className=" flex gap-4 md:gap-6 px-4 py-3 shadow-md items-center rounded-xl shadow-bg">
+    <div onClick={onClick} className=" flex gap-4 md:gap-6 px-4 py-3 shadow-sm items-center rounded-xl shadow-bg">
       <img
         className="rounded-lg h-[50px] w-[50px] object-cover"
         src={imgSrc ? `${imgSrc}` : "/images/pexels-photo-1018133.jpeg"}

@@ -58,7 +58,7 @@ export function NotesEditor() {
     </div>
   ) : (
     <div className=" mt-6 h-full">
-      <form className="flex h-[90vh] flex-col  page-animate font-light gap-3 md:gap-6 [&_input]:border-[1px] [&_input]:border-neutral-300">
+      <form className="flex h-[80vh] flex-col  page-animate font-light gap-3 md:gap-6 [&_input]:border-[1px] [&_input]:border-neutral-300">
         <input
           className="px-4 py-3 rounded-lg w-[80%] md:w-[60%] text-sm max-w-[600px]"
           type="text"
