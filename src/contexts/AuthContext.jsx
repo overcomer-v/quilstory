@@ -31,7 +31,7 @@ export function AuthContextProvider({ children }) {
           setUserName(data[0].username);
         });
         }}
-        alert(data.session,user);
+       
       setLoading(false);
     });
 
@@ -57,7 +57,7 @@ export function AuthContextProvider({ children }) {
         });
         }}
         
-        alert(session,user);
+
         setLoading(false);
         console.log(session?.user);
       }

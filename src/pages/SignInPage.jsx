@@ -42,12 +42,12 @@ export function SignInPage() {
     return (
       <div className="h-screen flex justify-center items-center w-full page-animate">
         <form className="md:w-[65%] w-[75%] max-w-[26rem] m-auto flex justify-center items-start flex-col [&>input]:bg-opacity-70 [&>input]:py-3 [&>input]:rounded-lg [&>input]:bg-neutral-100 [&>label]:font-light [&>label]:mt-4 [&>label]:mb-1 [&>label]:opacity-90 [&>label]:text-base ">
-          <h1 className="mb-4 flex flex-col">
+          <div className="mb-4 flex flex-col">
             <h2 className="text-left w-full text-4xl font-bold">
               Sign Up
             </h2>
             <p className="font-light text-xs opacity-30">Let's sign you up to continue</p>
-          </h1>
+          </div>
           <label htmlFor="username">Username</label>
           <input
             name="username"

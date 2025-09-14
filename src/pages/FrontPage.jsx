@@ -17,10 +17,12 @@ export function FrontPage() {
     }
   }, [currentUser, loading]);
 
+const t = true;
+
   return (
     <div className="relative">
-      {loading || !currentUser ? (
-        <div className="bg-black z-50 bg-opacity-70 w-screen items-center justify-center h-full flex flex-col absolute">
+      {loading ? (
+        <div className="bg-black z-50 bg-opacity-70  w-screen items-center justify-center h-screen flex flex-col fixed">
           <Spinner className={"h-14 w-14 "}></Spinner>
           <div className="mt-1 text-white">Getting Accounts...</div>
         </div>
@@ -87,7 +89,7 @@ export function FrontPage() {
             ></ChooseCard>
           </div>
         </section>
-        <footer className="flex md:flex-row flex-col text-white gap-8 justify-center md:justify-between items-center mt-8 px-8 py-10 bg-[rgb(10,20,35)]">
+        <footer id="footer" className="flex md:flex-row flex-col text-white gap-8 justify-center md:justify-between items-center mt-8 px-8 py-10 bg-[rgb(10,20,35)]">
         <div className="flex items-center gap-6">
             <h1 className="text-xl">Quilstory</h1>
           <div className=" flex border-l-2 border-l-white pl-6 flex-col text-xs font-light opacity-35">
@@ -143,12 +145,13 @@ export function FrontPage() {
           <div className="text-xl font-bold ">QuilStory</div>
         </div>
         <div className="md:flex gap-6 text-sm hidden">
-          <h4>About Us</h4>
-          <h4>Contact Us</h4>
+          
+          <a href="#footer">About Us</a>
+          <a href="#footer">Contact Us</a>
         </div>
         <div className="flex gap-4 text-sm">
           <button
-            className="md:px-6 px-4 py-2 border-2 border-white rounded-xl"
+            className="md:px-6 px-4 py-2 border-2 border-white rounded-xl text-xs md:text-sm"
             onClick={() => {
               navigate("/sign-in/sign-up");
             }}
@@ -156,7 +159,7 @@ export function FrontPage() {
             SignUp
           </button>
           <button
-            className="md:px-6 px-4 py-2 bg-blue-600 rounded-xl text-white"
+            className="md:px-6 px-4 py-2 bg-blue-600 rounded-xl text-white text-xs md:text-sm"
             onClick={() => {
               navigate("/sign-in/sign-in");
             }}
