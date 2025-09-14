@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import {
+  BrowserRouter,
   HashRouter,
   Outlet,
   Route,
@@ -24,7 +25,7 @@ function App() {
   
   return (
     <AuthContextProvider>
-      <HashRouter>
+      <BrowserRouter>
         <Routes>
           {" "}
           <Route path="/" element={<FrontPage />}></Route>
@@ -55,7 +56,7 @@ function App() {
             <Route path="/home" element={<Home></Home>}></Route>
           </Route>
         </Routes>
-      </HashRouter>
+      </BrowserRouter>
     </AuthContextProvider>
   );
 
