@@ -1,4 +1,3 @@
-
 import { supabase } from "./supabase-client";
 
 const currentDate = Date.now().toLocaleString("en-US", {
@@ -21,32 +20,29 @@ const demoJournal = {
 };
 
 const demoNote = {
-  title:"Welcome",
-  note:demoEvent
-}
-
+  title: "Welcome",
+  note: demoEvent,
+};
 
 export async function newUserRites(userName) {
-   const { error: profileError } = await supabase
-      .from("profiles")
-      .insert([{ username: userName }]);
-    if (profileError) {
-      throw profileError;
-    }
+  const { error: profileError } = await supabase
+    .from("profiles")
+    .insert([{ username: userName }]);
+  if (profileError) {
+    throw profileError;
+  }
 
-    const { error: journalError } = await supabase
-      .from("journals")
-      .insert([demoJournal]);
-    if (journalError) {
-      throw journalError;
-    }
+  const { error: journalError } = await supabase
+    .from("journals")
+    .insert([demoJournal]);
+  if (journalError) {
+    throw journalError;
+  }
 
-    const { error: notesError } = await supabase
-      .from("notes")
-      .insert([demoNote]);
-    if (notesError) {
-      throw notesError;
-    }
+  const { error: notesError } = await supabase.from("notes").insert([demoNote]);
+  if (notesError) {
+    throw notesError;
+  }
 }
 
 export async function signUp(email, password, userName) {
@@ -60,7 +56,7 @@ export async function signUp(email, password, userName) {
       throw error;
     }
 
-   await newUserRites(userName);
+    await newUserRites(userName);
 
     console.log("successfull");
     console.log(data.user);
@@ -71,19 +67,18 @@ export async function signUp(email, password, userName) {
 }
 
 export async function googleSignIn() {
-
-  const localRedirect = "http://localhost:3000/*";
+  const localRedirect = "http://localhost:5173";
+  const prodRedirect = "https://quilstory.vercel.app/home";
 
   try {
-    const { error:signInError } = await supabase.auth.signInWithOAuth({
+    const { error: signInError } = await supabase.auth.signInWithOAuth({
       provider: "google",
-      options:{redirectTo:"https://quilstory.vercel.app/#/home"}
+      options: { redirectTo: prodRedirect },
     });
 
     if (signInError) {
       throw signInError;
     }
-
   } catch (error) {
     console.error(error);
     throw error;
