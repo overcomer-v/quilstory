@@ -64,8 +64,8 @@ export function ItemView() {
         ></Button>
         <Button text={"Share"} iconData={"fa-share"}></Button>
       </div>
-      <div className="flex flex-col items-start gap-4 md:w-[500px] w-full mt-16">
-        <div className="mb-4">
+      <div className="flex flex-col items-start gap-4 md:w-[500px] w-full mt-8 md:mt-16">
+        <div className="mb-2 md:mb-4">
           <h2 className="text-3xl">{item.title}</h2>
           <p className="text-xs opacity-40">{item.date}</p>
         </div>
@@ -78,10 +78,10 @@ export function ItemView() {
             alt=""
           />
         )}
-        <p className="font-light text-base opacity-90 w-[80%] mt-4">
+        <p className="font-light text-base opacity-90 md:w-[80%] w-full mt-4">
           {item.event ?? item.note}
-        </p>
-        {item.event && <p>{`Tags : ${item.tag}`}</p>}
+        </p >
+        {item.event && <p className="mt-3 border-[1px] border-neutral-400 w-fit px-3 py-2 rounded-xl">{` ${item.tag}`}</p>}
       </div>
     </div>
   );
@@ -90,7 +90,7 @@ export function ItemView() {
     return (
       <button
         onClick={onClick}
-        className="px-4 py-2 flex gap-2 items-center shadow-md rounded-md"
+        className="px-4 py-2 flex gap-2 items-center shadow-sm rounded-md"
       >
         <i className={`fa ${iconData} opacity-50 text-xs`}></i>
         <p className="text-xs opacity-80">{text}</p>

@@ -1,7 +1,8 @@
+import { useNavigate } from "react-router-dom";
 import { useAuth } from "../contexts/AuthContext";
 import { useMediaQuery } from "../hooks/mediaQuery";
 
-export function Header({ setShowNav }) {
+export function Header({ setShowNav, searchMode }) {
   const { userName } = useAuth();
   const matches = useMediaQuery("(max-width: 768px)");
   function getCurrentNav() {
@@ -25,13 +26,20 @@ export function Header({ setShowNav }) {
     return userName ? userName : "Login";
   }
 
-  return matches ? (
+  return (
+    <div >
+      { matches ? (
     <SmallScreensHeader setShowNav={setShowNav}></SmallScreensHeader>
   ) : (
     <LargeScreenHeader></LargeScreenHeader>
+  )}
+    </div>
   );
 
   function SmallScreensHeader({ setShowNav }) {
+
+        const navigate = useNavigate();
+
     return (
       <header className="flex shadow-md sticky top-0 shadow-bg justify-between items-center py-3 mx-2 px-4 z-[900] rounded-lg mt-2 md:mb-8 mb-4 text-lg ">
         <i
@@ -44,22 +52,28 @@ export function Header({ setShowNav }) {
           QuilStory
         </h1>
         <div className="flex gap-4">
-          <i className="fa fa-search"></i>
+          <i className="fa fa-search" onClick={()=>{
+            navigate("/search-page")
+          }}></i>
         </div>
       </header>
     );
   }
 
   function LargeScreenHeader() {
-    return <header className="flex sticky top-0 justify-between shadow-sm px-4 rounded-lg items-center gap-6 pb-4 pt-4 w-full bg-main z-[1000]">
+
+    const navigate = useNavigate();
+
+    return <header className={`flex sticky top-0 justify-between shadow-sm px-4 rounded-lg items-center gap-6 pb-4 pt-4 w-full bg-main z-[1000] searchMode ${searchMode? `hidden`:""}`}>
       {/* <div className="text-xl font-bold opacity-70">{getCurrentNav()}</div> */}
-      <div className="flex gap-2 px-4 py-3 max-w-xs grow bg-neutral-100 rounded-3xl items-center">
+      <div onClick={()=>{
+        navigate("/search-page");
+      }} className="flex gap-2 px-4 py-3 cursor-pointer max-w-xs grow w-full bg-neutral-100 rounded-3xl items-center">
         <i className="fa fa-search opacity-70"></i>
-        <input
-          className="h-full w-full bg-transparent font-light"
-          type="text"
-          placeholder="Search"
-        />
+        <p
+          className="h-full opacity-50 w-full bg-transparent font-light">
+         Search
+        </p>
       </div>
       <div className="flex gap-2 items-center">
         <img

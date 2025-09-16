@@ -242,6 +242,34 @@ export function useJournalDatabaseManager() {
     }
   }
 
+  async function queryJournals(keyword) {
+    try {
+      const { data, error } = await supabase
+        .from(journalsTable)
+        .select("*")
+        .or(
+          `title.ilike.%${keyword}%,event.ilike.%${keyword}%,tag.ilike.%${keyword}%`
+        );
+      if (error) {
+        throw error;
+      }
+      const items = await Promise.allSettled(
+          data.map(async (obj) => {
+            return {
+              ...obj,
+              imageSrc: await getImageUrl(obj.image_url),
+            };
+          })
+        );
+
+        return items.map((e)=> e.value)
+       
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
   return {
     events,
     isJournalLoading,
@@ -251,6 +279,7 @@ export function useJournalDatabaseManager() {
     deleteItem,
     getItem,
     updateItem,
+    queryJournals,
   };
 }
 
@@ -317,7 +346,8 @@ export function useNoteDatabaseManager() {
         throw error;
       }
 
-      if (data) {        console.log(data);
+      if (data) {
+        console.log(data);
 
         return data[0];
       } else {
@@ -366,6 +396,26 @@ export function useNoteDatabaseManager() {
     }
   }
 
+   async function queryNotes(keyword) {
+    try {
+      const { data, error } = await supabase
+        .from(notesTable)
+        .select("*")
+        .or(
+          `title.ilike.%${keyword}%,note.ilike.%${keyword}%`
+        );
+      if (error) {
+        throw error;
+      }
+     
+        return data;
+       
+    } catch (error) {
+      console.error(error);
+      throw error;
+    }
+  }
+
   return {
     notes,
     isNotesLoading,
@@ -374,5 +424,6 @@ export function useNoteDatabaseManager() {
     getNoteItem,
     updateNoteItem,
     deleteNoteItem,
+    queryNotes
   };
 }

@@ -8,6 +8,7 @@ import { Spinner } from "../components/Spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { HorizontalItemCard } from "../components/ItemsCard";
 import { getDateType, monthArray } from "../utils/date-formatter";
+import { WelcomeGreetings } from "../components/GreetingsComp";
 
 export function Home() {
   const { events, isJournalLoading, loadEvents } = useJournalDatabaseManager();
@@ -32,7 +33,7 @@ export function Home() {
     <Spinner isDark={false} className={"w-24 h-24"}></Spinner>
   ) : (
     <div className="page-animate">
-      <GreetingsAndDate name={userName} message={"WELCOME"}></GreetingsAndDate>
+      <WelcomeGreetings message={"WELCOME"}/>
 
       <div className="mt-8 md:mt-12 flex flex-col gap-3">
         <Link
@@ -125,33 +126,6 @@ export function Home() {
   }
 }
 
-function GreetingsAndDate({ name, message }) {
-  const date = new Date(Date.now());
-
-  return (
-    <div className="flex justify-between mt-12">
-      <div className="leading-none">
-        <h3 className="md:text-xs text-[0.6rem] opacity-60 md:mb-1">
-          {message}
-        </h3>
-        <h1 className="text-xl md:text-3xl">{name}</h1>
-      </div>
-
-      <div className="flex gap-1 items-center font-light [&_p]:text-xs [&_p]:opacity-80  leading-none">
-        <h1 className="md:text-4xl text-3xl">
-          {date.getDate()}
-          <span className="text-sm opacity-40">
-            {getDateType(date.getDate())}
-          </span>
-        </h1>
-        <div className="flex flex-col leading-none">
-          <p>{monthArray[date.getMonth()]}</p>
-          <p>{date.getFullYear()}</p>
-        </div>
-      </div>
-    </div>
-  );
-}
 
 function Subtitle({ label }) {
   return (

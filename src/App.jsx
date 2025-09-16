@@ -21,8 +21,11 @@ import { Editor } from "./pages/Editor";
 import { NotesEditor } from "./pages/NotesEditor";
 import { ItemView } from "./pages/ItemView";
 import { newUserRites } from "./utils/authenticate";
+import { SearchPage } from "./pages/SearchPage";
 function App() {
-  
+
+  const [searchMode,setSearchMode] = useState(false);
+
   return (
     <AuthContextProvider>
       <BrowserRouter>
@@ -31,6 +34,8 @@ function App() {
           <Route path="/" element={<FrontPage />}></Route>
           <Route path="/sign-in/:type" element={<SignInPage />}></Route>
           <Route element={<UserLayout />}>
+            <Route path="/search-page" element={<SearchPage setSearchMode={setSearchMode} />}></Route>
+
             <Route path="/entries" element={<Entries />}></Route>
             <Route
               path="/editor/:entryType?"
@@ -42,7 +47,7 @@ function App() {
             ></Route>
             <Route
               path="/journal-editor/:journalId?"
-              element={<JournalEditor></JournalEditor>}
+              element={<JournalEditor ></JournalEditor>}
             ></Route>
             <Route
               path="/note-editor/:noteId?"
@@ -61,30 +66,34 @@ function App() {
   );
 
   function UserLayout() {
-    const { loading, currentUser,userName } = useAuth();
+    const { loading, currentUser, userName } = useAuth();
     const [showNav, setShowNav] = useState(false);
     const navigate = useNavigate();
 
-  async function addDemoEntries() {
-   const createdAt = Math.floor(new Date(currentUser.created_at).getTime() / 1000)      // seconds
-  const lastSignInAt = Math.floor(new Date(currentUser.last_sign_in_at).getTime() / 1000)
+    async function addDemoEntries() {
+      const createdAt = Math.floor(
+        new Date(currentUser.created_at).getTime() / 1000
+      ); // seconds
+      const lastSignInAt = Math.floor(
+        new Date(currentUser.last_sign_in_at).getTime() / 1000
+      );
 
-  // Allow a difference of up to 5 seconds
-  const diff = Math.abs(lastSignInAt - createdAt)
-  const isFirstLogin = diff <= 5
+      // Allow a difference of up to 5 seconds
+      const diff = Math.abs(lastSignInAt - createdAt);
+      const isFirstLogin = diff <= 5;
 
-
-    if (isFirstLogin) {
-      await newUserRites(currentUser.user_metadata.full_name);
-    } else {
-      console.log("Returning user — proceed normally");
+      if (isFirstLogin) {
+        await newUserRites(currentUser.user_metadata.full_name);
+      } else {
+        console.log("Returning user — proceed normally");
+      }
     }
-  }
 
-  useEffect(() => {
-    addDemoEntries();
-  }, [userName]);
-
+    useEffect(() => {
+     if (currentUser) {
+       addDemoEntries();
+     }
+    }, [userName,currentUser]);
 
     useEffect(() => {
       if (!loading && !currentUser) {
@@ -105,7 +114,7 @@ function App() {
         <NavBar showNav={showNav} setShowNav={setShowNav}></NavBar>
 
         <div className=" overflow-y-auto h-screen md:p-0 w-full relative">
-          <Header setShowNav={setShowNav}></Header>
+          <Header setShowNav={setShowNav} searchMode={searchMode} ></Header>
           <div className="px-5 h-full mt-6 ">
             <Outlet />
           </div>

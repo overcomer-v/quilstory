@@ -21,10 +21,10 @@ const t = true;
 
   return (
     <div className="relative">
-      {loading ? (
+      { loading ? (
         <div className="bg-black z-50 bg-opacity-70  w-screen items-center justify-center h-screen flex flex-col fixed">
           <Spinner className={"h-14 w-14 "}></Spinner>
-          <div className="mt-1 text-white">Getting Accounts...</div>
+          <div className="mt-1 text-white font-light">Getting Accounts...</div>
         </div>
       ) : (
         ""
@@ -151,7 +151,7 @@ const t = true;
         </div>
         <div className="flex gap-4 text-sm">
           <button
-            className="md:px-6 px-4 py-2 border-2 border-white rounded-xl text-xs md:text-sm"
+            className="md:px-5 px-4 py-2 border-2 border-white rounded-xl text-xs md:text-sm"
             onClick={() => {
               navigate("/sign-in/sign-up");
             }}
@@ -159,7 +159,7 @@ const t = true;
             SignUp
           </button>
           <button
-            className="md:px-6 px-4 py-2 bg-blue-600 rounded-xl text-white text-xs md:text-sm"
+            className="md:px-5 px-4 py-2 bg-blue-600 rounded-xl text-white text-xs md:text-sm"
             onClick={() => {
               navigate("/sign-in/sign-in");
             }}

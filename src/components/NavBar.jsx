@@ -50,7 +50,7 @@ export function NavBar({ showNav, setShowNav }) {
     >
       <div className="flex items-center gap-2 ml-3 mb-3">
         {" "}
-        <i className="fa fa-pencil -rotate-90 rounded-md shadow-sm bg-neutral-300 text-white p-[0.4rem] text-[0.6rem]"></i>
+        <i className="fa fa-pencil -rotate-90 rounded-md shadow-sm bg-neutral-300 text-neutral-100 p-[0.4rem] text-[0.6rem]"></i>
         <h1 className="text-blue-600 text-xl font-bold">QuilStory</h1>
       </div>
       <div className="flex h-[90%] flex-col items-start w-full">

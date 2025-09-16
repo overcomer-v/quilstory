@@ -73,14 +73,14 @@ export function ItemCard({ item, onAction, onClick, ref }) {
           <span className="opacity-30 md:text-xs text-xs">
             {new Date(item.created_at).getFullYear()}
           </span>
-          <i
+         {  onAction && <i
             className="fa fa-ellipsis-v flex items-end h-fit opacity-50 rounded-full p-2 hover:bg-neutral-500 hover:text-white z-20"
             onClick={(e) => {
               e.stopPropagation();
-              // ref.current.click();
+              ref.current.click();
               setShowPopUp(!showPopUp);
             }}
-          ></i>
+          ></i>}
         </div>
       </div>
     </div>
@@ -89,7 +89,7 @@ export function ItemCard({ item, onAction, onClick, ref }) {
 
 export function HorizontalItemCard({ imgSrc, title, prev, date, onClick }) {
   return (
-    <div onClick={onClick} className=" flex gap-4 md:gap-6 px-4 py-3 shadow-sm items-center rounded-xl shadow-bg">
+    <div onClick={onClick} className=" flex cursor-pointer gap-4 md:gap-6 px-4 py-3 shadow-sm items-center rounded-xl shadow-bg">
       <img
         className="rounded-lg h-[50px] w-[50px] object-cover"
         src={imgSrc ? `${imgSrc}` : "/images/pexels-photo-1018133.jpeg"}
