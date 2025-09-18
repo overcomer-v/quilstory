@@ -51,7 +51,7 @@ export function AllJournalLists() {
   return isJournalLoading || loading ? (
     <div className="flex items-center justify-center w-full h-[60vh]">
       <Spinner
-        className={"h-16 w-16 text-black opacity-70"}
+        className={"h-16 w-16 text-black opacity-40"}
         isDark={true}
       ></Spinner>
     </div>

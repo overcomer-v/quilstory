@@ -3,6 +3,7 @@ import { getDateType, monthArray } from "../utils/date-formatter";
 
 export function ItemCard({ item, onAction, onClick, ref }) {
   const [showPopUp, setShowPopUp] = useState(false);
+  const [onDelete,setOnDelete] = useState(false);
 
   const popUpRef = useRef();
 
@@ -34,13 +35,20 @@ export function ItemCard({ item, onAction, onClick, ref }) {
         <CardPopUp ref={popUpRef}>
           <PopUpListItems
             label={"Delete journal"}
-            iconData={"fa-trash-can"}
+            iconData={onDelete ? "fa-spinner fa-spin" : "fa-trash-can"}
             onClick={async () => {
-              if (item.note) {
+              setOnDelete(true);
+             try {
+               if (item.note) {
                 await onAction("Delete", item.id);
               } else {
                 await onAction("Delete", item.id, item.image_url);
               }
+             } catch (error) {
+              alert(error);
+             }finally{
+              setOnDelete(false);
+             }
             }}
           ></PopUpListItems>
           <PopUpListItems
@@ -102,7 +110,7 @@ export function HorizontalItemCard({ imgSrc, title, prev, date, onClick }) {
             {prev}
           </p>
           <span className="opacity-30 line-clamp-1 text-[0.6rem] font-light">
-            {date}
+            {new Date(date).toLocaleString()}
           </span>
         </div>
       </div>
