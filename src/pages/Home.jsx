@@ -30,7 +30,7 @@ export function Home() {
   useEffect(() => {}, []);
 
   return loading ? (
-    <Spinner isDark={false} className={"w-24 h-24"}></Spinner>
+    <Spinner isDark={false} className={"text-4xl"}></Spinner>
   ) : (
     <div className="page-animate">
       <WelcomeGreetings message={"WELCOME"}/>
@@ -72,11 +72,11 @@ export function Home() {
     return (
       <section id="recent-journals" className="md:mt-12 mt-6">
         <Subtitle label={"Recent Journals"}></Subtitle>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,500px))] gap-4">
+        <div className="grid md:grid-cols-[repeat(auto-fit,minmax(400px,1fr))] 2xl:grid-cols-[repeat(auto-fit,minmax(400px,500px))] gap-4">
           {isJournalLoading ? (
             <Spinner
               isDark={true}
-              className={"h-12 w-12 m-auto opacity-30"}
+              className={"text-2xl m-auto opacity-30"}
             ></Spinner>
           ) : (
             events?.slice(0, 5).map((e,i) => (
@@ -101,11 +101,11 @@ export function Home() {
     return (
       <section id="recent-Notes" className="mt-12">
         <Subtitle label={"Recent Notes"}></Subtitle>
-        <div className="grid grid-cols-[repeat(auto-fit,minmax(300px,500px))] gap-3">
+        <div className="grid md:grid-cols-[repeat(auto-fit,minmax(400px,1fr))] 2xl:grid-cols-[repeat(auto-fit,minmax(400px,500px))] gap-3">
           {isNotesLoading ? (
             <Spinner
               isDark={true}
-              className={"h-12 w-12 opacity-30 m-auto"}
+              className={"text-2xl opacity-30 m-auto"}
             ></Spinner>
           ) : (
             notes?.slice(0, 5).map((e,i) => (

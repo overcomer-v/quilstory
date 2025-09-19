@@ -17,13 +17,11 @@ export function FrontPage() {
     }
   }, [currentUser, loading]);
 
-const t = true;
-
   return (
     <div className="relative">
       { loading ? (
         <div className="bg-black z-50 bg-opacity-70  w-screen items-center justify-center h-screen flex flex-col fixed">
-          <Spinner className={"h-14 w-14 "}></Spinner>
+          <Spinner className={"text-5xl "}></Spinner>
           <div className="mt-1 text-white font-light">Getting Accounts...</div>
         </div>
       ) : (

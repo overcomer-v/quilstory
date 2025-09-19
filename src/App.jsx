@@ -105,12 +105,12 @@ function App() {
     return loading ? (
       <div className="flex items-center justify-center w-full h-screen ">
         <Spinner
-          className={"h-16 w-16 text-black opacity-30"}
+          className={"text-4xl text-black opacity-30"}
           isDark={true}
         ></Spinner>
       </div>
     ) : (
-      <div className="grid md:grid-cols-[240px_1fr] relative md:gap-2 w-full h-full lg:min-w-6xl">
+      <div className="grid md:grid-cols-[240px_1fr] relative md:gap-2 w-full h-full">
         <NavBar showNav={showNav} setShowNav={setShowNav}></NavBar>
 
         <div className=" overflow-y-auto h-screen md:p-0 w-full relative">

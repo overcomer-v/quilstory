@@ -24,9 +24,8 @@ export function NotesEditor() {
     }
   }, []);
   async function uploadNotesHandler() {
-
-
-    const notee = createNoteObject({
+    if (title && note && title !="" && note !="") {
+         const notee = createNoteObject({
       title,
       // ...(!noteId
       //   ? { date: formatter.toLocaleString() }
@@ -42,10 +41,14 @@ export function NotesEditor() {
       }
       console.log(notee);
       navigate("/entries");
+      alert("Upload Successfull!")
     } catch (error) {
-      alert(error);
+      alert("Upload Error:",error);
     } finally {
       setIsUploading(false);
+    }
+    }else{
+      alert("Require fields can not be null");
     }
   }
 

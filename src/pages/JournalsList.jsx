@@ -3,7 +3,6 @@ import { ItemCard } from "../components/ItemsCard";
 import { useAuth } from "../contexts/AuthContext";
 import { Spinner } from "../components/Spinner";
 import { useEffect, useRef, useState } from "react";
-import { useInternetStatus } from "../hooks/internetStatus";
 import { ErrorMessage, OfflineMessage } from "../components/ErrorWidget";
 import { useNavigate } from "react-router-dom";
 
@@ -51,7 +50,7 @@ export function AllJournalLists() {
   return isJournalLoading || loading ? (
     <div className="flex items-center justify-center w-full h-[60vh]">
       <Spinner
-        className={"h-16 w-16 text-black opacity-40"}
+        className={"text-3xl text-black opacity-40"}
         isDark={true}
       ></Spinner>
     </div>
@@ -62,7 +61,7 @@ export function AllJournalLists() {
   ) : (
     <div
       ref={pageRef}
-      className="grid md:grid-cols-[repeat(auto-fit,minmax(200px,300px))] grid-cols-1 md:gap-8 gap-3 justify-start items-start page-animate"
+      className="grid md:grid-cols-[repeat(auto-fit,minmax(180px,220px))] grid-cols-1 md:gap-3 gap-3 justify-start items-start page-animate"
     >
       {events.map((e) => {
         // console.log(e)

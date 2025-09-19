@@ -28,7 +28,7 @@ export function ItemCard({ item, onAction, onClick, ref }) {
   return (
     <div
       onClick={onClick}
-      className=" flex shadow-sm relative gap-3 h-fit bg-neutral-100 w-full cursor-pointer items-center p-4 rounded-2xl"
+      className=" flex shadow-sm relative gap-3 md:max-w-[220px] h-fit bg-[rgb(240,240,240)] w-full cursor-pointer items-center p-4 rounded-2xl"
     >
       <DateWidget itemDate={item.created_at}></DateWidget>
       {showPopUp && (
@@ -122,7 +122,7 @@ function DateWidget({ itemDate }) {
   const date = new Date(itemDate);
 
   return (
-    <div className="flex flex-col z-10 gap-0 p-3 h-fit pr-3 absolute left-0 top-0 bg-neutral-100 rounded-2xl items-center font-light [&_p]:text-xs [&_p]:opacity-80  leading-none">
+    <div className="flex flex-col z-10 gap-0 p-3 h-fit pr-3 absolute left-0 top-0 bg-[rgb(240,240,240)] rounded-2xl items-center font-light [&_p]:text-xs [&_p]:opacity-80  leading-none">
       <h1 className="md:text-lg text-base">
         {date.getDate()}
         <span className="text-sm opacity-40">
@@ -144,7 +144,7 @@ function CardPopUp({ children, ref }) {
         e.stopPropagation();
       }}
       ref={ref}
-      className=" flex flex-col gap-4 absolute md:-right-14 right-1 top-1/2 bg-neutral-100 px-6 py-2 rounded-lg z-50 border-[1px]"
+      className=" flex flex-col gap-4 absolute md:-right-14 right-1 top-1/2 shadow-bg px-6 py-2 rounded-lg z-50 border-[1px]"
     >
       <li>{children}</li>
     </ul>

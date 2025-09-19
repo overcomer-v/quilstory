@@ -4,7 +4,7 @@
   font-weight: 400;
 
   color: black;
-  background-color: rgb(233, 233, 233);
+  background-color: rgb(220, 220, 220);
 
   font-synthesis: none;
   text-rendering: optimizeLegibility;
@@ -13,7 +13,7 @@
 }
 
 .bg-main{
-    background-color: rgb(233, 233, 233);
+    background-color: rgb(220, 220, 220);
 
 }
 
@@ -43,7 +43,7 @@ textarea{
 }
 
 input, textarea {
-  background-color: rgb(243,243,243);
+  background-color: rgb(240,240,240);
  ;
 }
 
@@ -52,7 +52,7 @@ input, textarea {
 }
 
 .shadow-bg {
-  background-color: rgb(240,240,240);
+  background-color: rgb(232,232,232);
 }
 
 .fa-bounce{

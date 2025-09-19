@@ -100,7 +100,7 @@ export function SearchPage({ setSearchMode }) {
       {loading ? (
         <Spinner
           isDark={true}
-          className={"opacity-30 h-12 w-12 m-auto mt-14"}
+          className={"opacity-30 text-3xl m-auto mt-14"}
         />
       ) : emptyResults === false ? (
         <div>
@@ -112,7 +112,7 @@ export function SearchPage({ setSearchMode }) {
             <SelectorButton idType={"notes"} />
           </div>
          
-          <div className="grid md:grid-cols-[repeat(auto-fit,minmax(200px,300px))] gap-4 mt-6">
+          <div className="grid md:grid-cols-[repeat(auto-fit,minmax(200px,250px))] gap-3 mt-6">
             {results.map((data, index) => (
               <ItemCard item={data} key={index}></ItemCard>
             ))}

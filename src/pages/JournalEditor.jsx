@@ -49,7 +49,7 @@ export function JournalEditor() {
   }
 
   async function uploadEventsHandler() {
-    if (title && events) {
+    if (title && events && title !="" && events !="") {
 
       const event = {
         title: title,
@@ -74,10 +74,11 @@ export function JournalEditor() {
         } else {
           await uploadEvent(event, imageFile, currentUser.id);
         }
+        alert("Upload Successfull!")
         console.log(event);
         navigate("/entries");
       } catch (error) {
-        alert(error);
+        alert("Upload Error :",error);
       } finally {
         setIsUploading(false);
       }

@@ -31,10 +31,7 @@ export function ItemView() {
 
   return !item ? (
     <div className=" flex flex-col h-[60vh]">
-      <Spinner
-        isDark={true}
-        className={"h-12 w-12 m-auto opacity-30"}
-      ></Spinner>
+      <Spinner isDark={true} className={"text-3xl m-auto opacity-30"}></Spinner>
     </div>
   ) : (
     <div className="mt-8">
@@ -64,24 +61,28 @@ export function ItemView() {
         ></Button>
         <Button text={"Share"} iconData={"fa-share"}></Button>
       </div>
-      <div className="flex flex-col items-start gap-4 md:w-[500px] w-full mt-8 md:mt-16">
-        <div className="mb-2 md:mb-4">
-          <h2 className="text-3xl">{item.title}</h2>
-          <p className="text-xs opacity-40">{item.date}</p>
-        </div>
+      <div className="flex flex-col items-start gap-4 md:w-[500px] w-full mt-8 md:mt-10">
+       
       </div>
       <div className="mt gap-2">
-        {item.event && (
+        <div>
+          {item.event && (
           <img
-            className="rounded-lg h-[300px] object-cover float-left mr-4 mb-8"
+            className="rounded-lg h-[300px] object-cover  mr-4 mb-8"
             src={item.imageSrc ?? "/images/pexels-photo-1018133.jpeg"}
             alt=""
           />
-        )}
-        <p className="font-light text-base opacity-90 md:w-[80%] w-full mt-4">
-          {item.event ?? item.note}
-        </p >
-        {item.event && <p className="mt-3 border-[1px] border-neutral-400 w-fit px-3 py-2 rounded-xl">{` ${item.tag}`}</p>}
+        )}  <div className="mb-2 md:mb-4">
+          <h2 className="text-3xl">{item.title}</h2>
+          <p className="text-xs opacity-40">{new Date(item.created_at).toLocaleString()}</p>
+        </div> <p className="font-light text-base opacity-90 md:w-[80%] w-full mt-6">
+            {item.event ?? item.note}
+          </p>
+        </div>
+          {item.event && (
+            <p className="mt-6 border-[1px] float-none  border-neutral-400 w-fit px-3 py-2 rounded-xl">{` ${item.tag}`}</p>
+          )}
+       
       </div>
     </div>
   );

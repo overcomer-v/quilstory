@@ -66,9 +66,9 @@ export function Header({ setShowNav, searchMode }) {
 
     return <header className={`flex sticky top-0 justify-between shadow-sm px-4 rounded-lg items-center gap-6 pb-4 pt-4 w-full bg-main z-[1000] searchMode ${searchMode? `hidden`:""}`}>
       {/* <div className="text-xl font-bold opacity-70">{getCurrentNav()}</div> */}
-      <div onClick={()=>{
+       <div onClick={()=>{
         navigate("/search-page");
-      }} className="flex gap-2 px-4 py-3 cursor-pointer max-w-xs grow w-full bg-neutral-100 rounded-3xl items-center">
+      }} className="flex gap-2 px-4 py-3 cursor-pointer max-w-80 grow w-full bg-[rgb(240,240,240)] rounded-3xl items-center">
         <i className="fa fa-search opacity-70"></i>
         <p
           className="h-full opacity-50 w-full bg-transparent font-light">

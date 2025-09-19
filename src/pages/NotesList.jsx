@@ -14,7 +14,7 @@ export function AllNotesLists() {
   const { loading, currentUser } = useAuth();
   const [notesError, setNotesError] = useState();
   const navigate = useNavigate();
-  const itemsRef = useRef();
+  const pageRef = useRef();
 
   useEffect(() => {
     async function loadNotess() {
@@ -45,7 +45,7 @@ export function AllNotesLists() {
   ) : isNotesLoading || loading ? (
     <div className="flex items-center justify-center w-full h-screen">
       <Spinner
-        className={"h-16 w-16 text-black opacity-40"}
+        className={"text-3xl text-black opacity-40"}
         isDark={true}
       ></Spinner>
     </div>
@@ -54,10 +54,10 @@ export function AllNotesLists() {
   ) : !notes.length > 0 ? (
     <ErrorMessage message={"Your Events are empty"}></ErrorMessage>
   ) : (
-    <div className="grid grid-cols-[repeat(auto-fit,minmax(220px,300px))] gap-6 justify-start items-start page-animate">
+    <div ref={pageRef} className="grid grid-cols-[repeat(auto-fit,minmax(200px,220px))] gap-3 justify-start items-start page-animate">
       {notes.map((e) => (
         <ItemCard
-         
+         ref={pageRef}
           key={e.id}
           onAction={onActions}
           item={e}
