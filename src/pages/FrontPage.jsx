@@ -97,7 +97,7 @@ export function FrontPage() {
           </div>
 
         </div>
-          <div className="flex gap-4">
+          {/* <div className="flex gap-4">
             <SocialLinks
             iconData={"fab fa-google"}
             to={"mailto:atoyejeovercomer2@gmail.com?subject=Hiring%20Inquiry"}
@@ -110,7 +110,7 @@ export function FrontPage() {
             iconData={"fab fa-twitter"}
             to={"https://x.com/victor_atoyeje_?s=09"}
           ></SocialLinks>
-          </div>
+          </div> */}
         </footer>
       </div>
     </div>
