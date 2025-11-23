@@ -22,9 +22,9 @@ import { NotesEditor } from "./pages/NotesEditor";
 import { ItemView } from "./pages/ItemView";
 import { newUserRites } from "./utils/authenticate";
 import { SearchPage } from "./pages/SearchPage";
+import { Cancel, Success } from "./pages/StripeResultPage";
 function App() {
-
-  const [searchMode,setSearchMode] = useState(false);
+  const [searchMode, setSearchMode] = useState(false);
 
   return (
     <AuthContextProvider>
@@ -33,8 +33,13 @@ function App() {
           {" "}
           <Route path="/" element={<FrontPage />}></Route>
           <Route path="/sign-in/:type" element={<SignInPage />}></Route>
+          <Route path="/success" element={<Success />} />
+          <Route path="/cancel" element={<Cancel />} />
           <Route element={<UserLayout />}>
-            <Route path="/search-page" element={<SearchPage setSearchMode={setSearchMode} />}></Route>
+            <Route
+              path="/search-page"
+              element={<SearchPage setSearchMode={setSearchMode} />}
+            ></Route>
 
             <Route path="/entries" element={<Entries />}></Route>
             <Route
@@ -47,7 +52,7 @@ function App() {
             ></Route>
             <Route
               path="/journal-editor/:journalId?"
-              element={<JournalEditor ></JournalEditor>}
+              element={<JournalEditor></JournalEditor>}
             ></Route>
             <Route
               path="/note-editor/:noteId?"
@@ -90,10 +95,10 @@ function App() {
     }
 
     useEffect(() => {
-     if (currentUser) {
-       addDemoEntries();
-     }
-    }, [userName,currentUser]);
+      if (currentUser) {
+        addDemoEntries();
+      }
+    }, [userName, currentUser]);
 
     useEffect(() => {
       if (!loading && !currentUser) {
@@ -114,7 +119,7 @@ function App() {
         <NavBar showNav={showNav} setShowNav={setShowNav}></NavBar>
 
         <div className=" overflow-y-auto h-screen md:p-0 w-full relative">
-          <Header setShowNav={setShowNav} searchMode={searchMode} ></Header>
+          <Header setShowNav={setShowNav} searchMode={searchMode}></Header>
           <div className="px-5 h-full mt-6 ">
             <Outlet />
           </div>

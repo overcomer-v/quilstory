@@ -7,13 +7,13 @@ import { useAuth } from "../contexts/AuthContext";
 import { Spinner } from "../components/Spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { HorizontalItemCard } from "../components/ItemsCard";
-import { getDateType, monthArray } from "../utils/date-formatter";
 import { WelcomeGreetings } from "../components/GreetingsComp";
+import { supabase } from "../utils/supabase-client";
 
 export function Home() {
   const { events, isJournalLoading, loadEvents } = useJournalDatabaseManager();
   const { notes, loadNotes, isNotesLoading } = useNoteDatabaseManager();
-  const { loading, currentUser, userName } = useAuth();
+  const { loading, currentUser } = useAuth();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -61,6 +61,7 @@ export function Home() {
           ></QuickAccessItems>
         </div>
         <div>
+         <PricingPage/>
           <RecentJournalPreview />
           <RecentNotesPreview />
         </div>
@@ -159,4 +160,49 @@ function QuickAccessItems({ iconData, title, onClick }) {
       </button>
     </div>
   );
+}
+
+
+
+
+// Use in your component
+export default function PricingPage() {
+  const handleCheckout = async (productName, amount) => {
+  // Get current user
+  const { data: { user } } = await supabase.auth.getUser()
+  
+  if (!user) {
+    alert('Please log in first')
+    return
+  }
+  
+  // Call edge function
+  const { data, error } = await supabase.functions.invoke('create-checkout', {
+    body: { 
+      amount: amount,
+      productName: productName,
+      userId: user.id 
+    }
+  })
+  
+  if (error) {
+    console.error('Error:jasjkasjk', error.message)
+    alert('Payment failed to initialize')
+    return
+  }
+  
+  // Redirect to Stripe Checkout
+  window.location.href = data.url
+}
+  return (
+    <div>
+      <button onClick={() => handleCheckout('Premium Plan', 29.99)}>
+        Pay $29.99
+      </button>
+      
+      <button onClick={() => handleCheckout('Basic Plan', 9.99)}>
+        Pay $9.99
+      </button>
+    </div>
+  )
 }

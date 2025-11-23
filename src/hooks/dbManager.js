@@ -1,21 +1,12 @@
-import {
-  addDoc,
-  collection,
-  deleteDoc,
-  doc,
-  getDoc,
-  getDocs,
-  updateDoc,
-} from "firebase/firestore";
+
 import { useEffect, useState } from "react";
-import { db } from "../utils/mfirebase";
 import { supabase } from "../utils/supabase-client";
 
 export function useJournalDatabaseManager() {
   const [events, setEvent] = useState([]);
   const [isJournalLoading, setIsDataLoading] = useState(true);
 
-  const profilesTable = "profiles";
+  // const profilesTable = "profiles";
   const journalsTable = "journals";
 
   async function uploadEvent(event, image, currentUserId) {
