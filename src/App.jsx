@@ -22,7 +22,6 @@ import { NotesEditor } from "./pages/NotesEditor";
 import { ItemView } from "./pages/ItemView";
 import { newUserRites } from "./utils/authenticate";
 import { SearchPage } from "./pages/SearchPage";
-import { Cancel, Success } from "./pages/StripeResultPage";
 function App() {
   const [searchMode, setSearchMode] = useState(false);
 
@@ -33,8 +32,6 @@ function App() {
           {" "}
           <Route path="/" element={<FrontPage />}></Route>
           <Route path="/sign-in/:type" element={<SignInPage />}></Route>
-          <Route path="/success" element={<Success />} />
-          <Route path="/cancel" element={<Cancel />} />
           <Route element={<UserLayout />}>
             <Route
               path="/search-page"
@@ -115,7 +112,7 @@ function App() {
         ></Spinner>
       </div>
     ) : (
-      <div className="grid md:grid-cols-[240px_1fr] relative md:gap-2 w-full h-full">
+      <div className="grid md:grid-cols-[260px_1fr] relative md:gap-2 w-full h-full">
         <NavBar showNav={showNav} setShowNav={setShowNav}></NavBar>
 
         <div className=" overflow-y-auto h-screen md:p-0 w-full relative">

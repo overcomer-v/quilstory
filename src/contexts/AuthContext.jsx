@@ -1,6 +1,4 @@
-import { onAuthStateChanged } from "firebase/auth";
 import { createContext, useContext, useEffect, useState } from "react";
-import { auth } from "../utils/mfirebase";
 import { supabase } from "../utils/supabase-client";
 
 const AuthContext = createContext();

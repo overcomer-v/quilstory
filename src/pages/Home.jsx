@@ -8,7 +8,6 @@ import { Spinner } from "../components/Spinner";
 import { Link, useNavigate } from "react-router-dom";
 import { HorizontalItemCard } from "../components/ItemsCard";
 import { WelcomeGreetings } from "../components/GreetingsComp";
-import { supabase } from "../utils/supabase-client";
 
 export function Home() {
   const { events, isJournalLoading, loadEvents } = useJournalDatabaseManager();
@@ -33,7 +32,7 @@ export function Home() {
     <Spinner isDark={false} className={"text-4xl"}></Spinner>
   ) : (
     <div className="page-animate">
-      <WelcomeGreetings message={"WELCOME"}/>
+      <WelcomeGreetings message={"WELCOME"} />
 
       <div className="mt-8 md:mt-12 flex flex-col gap-3">
         <Link
@@ -61,7 +60,6 @@ export function Home() {
           ></QuickAccessItems>
         </div>
         <div>
-         <PricingPage/>
           <RecentJournalPreview />
           <RecentNotesPreview />
         </div>
@@ -80,9 +78,9 @@ export function Home() {
               className={"text-2xl m-auto opacity-30"}
             ></Spinner>
           ) : (
-            events?.slice(0, 5).map((e,i) => (
+            events?.slice(0, 5).map((e, i) => (
               <HorizontalItemCard
-              key={i}
+                key={i}
                 title={e.title}
                 date={e.created_at}
                 prev={e.event}
@@ -109,9 +107,9 @@ export function Home() {
               className={"text-2xl opacity-30 m-auto"}
             ></Spinner>
           ) : (
-            notes?.slice(0, 5).map((e,i) => (
+            notes?.slice(0, 5).map((e, i) => (
               <HorizontalItemCard
-              key={i}
+                key={i}
                 title={e.title}
                 date={e.created_at}
                 prev={e.note}
@@ -126,7 +124,6 @@ export function Home() {
     );
   }
 }
-
 
 function Subtitle({ label }) {
   return (
@@ -160,49 +157,4 @@ function QuickAccessItems({ iconData, title, onClick }) {
       </button>
     </div>
   );
-}
-
-
-
-
-// Use in your component
-export default function PricingPage() {
-  const handleCheckout = async (productName, amount) => {
-  // Get current user
-  const { data: { user } } = await supabase.auth.getUser()
-  
-  if (!user) {
-    alert('Please log in first')
-    return
-  }
-  
-  // Call edge function
-  const { data, error } = await supabase.functions.invoke('create-checkout', {
-    body: { 
-      amount: amount,
-      productName: productName,
-      userId: user.id 
-    }
-  })
-  
-  if (error) {
-    console.error('Error:jasjkasjk', error.message)
-    alert('Payment failed to initialize')
-    return
-  }
-  
-  // Redirect to Stripe Checkout
-  window.location.href = data.url
-}
-  return (
-    <div>
-      <button onClick={() => handleCheckout('Premium Plan', 29.99)}>
-        Pay $29.99
-      </button>
-      
-      <button onClick={() => handleCheckout('Basic Plan', 9.99)}>
-        Pay $9.99
-      </button>
-    </div>
-  )
 }

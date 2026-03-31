@@ -74,11 +74,11 @@ export function SearchPage({ setSearchMode }) {
       <div className="flex justify-end items-center w-full mt-8">
         <form
           action=""
-          className="flex items-center max-w-sm h-13 py-1 w-[80%] shadow-bg rounded-full"
+          className="flex items-center max-w-sm h-16 py-1 w-[90%] shadow-bg rounded-full"
         >
           <input
             type="text"
-            placeholder="Search ; title, events, notes, tags"
+            placeholder="Search title, events, notes, tags"
             className="bg-transparent  h-full font-light text-sm flex-1 pl-5"
             value={query}
             onChange={(e) => {
@@ -91,7 +91,7 @@ export function SearchPage({ setSearchMode }) {
               e.preventDefault();
               handleQuery();
             }}
-            className="fa cursor-pointer fa-search py-2 bg-blue-500 rounded-full text-white px-3 text-base"
+            className="fa cursor-pointer fa-search py-4 bg-blue-500 rounded-full text-white px-5 text-base"
           ></button>
         </form>
         {/* <button className="fa fa-multiply text-2xl opacity-40"></button> */}

@@ -1,7 +1,5 @@
 import { useEffect, useRef, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import { auth } from "../utils/mfirebase";
-import { signOut } from "firebase/auth";
 import { useMediaQuery } from "../hooks/mediaQuery";
 import { supabase } from "../utils/supabase-client";
 
@@ -43,21 +41,21 @@ export function NavBar({ showNav, setShowNav }) {
   return (
     <nav
       ref={navRef}
-      className={`flex h-full md:w-[230px] w-[230px] flex-col gap-2 md:px-4 overflow-hidden md:sticky absolute z-[1000] shadow-bg md: background-color: rgb(250, 250, 250);
+      className={`flex h-full md:w-[260px] w-[230px] flex-col gap-2 md:px-4 overflow-hidden md:sticky absolute z-[1000] bg-neutral-100
  ${
    !matches || showNav ? " left-0" : " -left-60"
- } transition-all ease-in-out duration-500 pr-2 pl-2 py-8 border-r-[1px]`}
+ } transition-all ease-in-out duration-500 pr-2 py-8 border-r-[0px]`}
     >
-      <div className="flex items-center gap-2 ml-3 mb-3">
+      <div className="flex items-center gap-2 ml-9 mb-3">
         {" "}
-        <i className="fa fa-pencil -rotate-90 rounded-md shadow-sm bg-neutral-300 text-neutral-100 p-[0.4rem] text-[0.6rem]"></i>
+        <i className="fa fa-pencil -rotate-90 rounded-md shadow-sm bg-blue-600  text-neutral-50 p-[0.4rem] text-[0.6rem]"></i>
         <h1 className="text-blue-600 text-xl font-bold">QuilStory</h1>
       </div>
       <div className="flex h-[90%] flex-col items-start w-full">
         <div className="gap-1 flex flex-col w-full">
-          <div className="opacity-30 text-xs ml-9 mt-4 mb-3 flex gap-4 items-center">
-            <p>Personal</p>
-            <div className="w-[40%] bg-neutral-400 h-[1px]"></div>
+          <div className="opacity-30 text-xs ml-9 mt-4 mb-10 flex gap-4 items-center pr-10">
+            <p className="">Personal</p>
+            <div className="w-[30%] bg-neutral-400 h-[1px]"></div>
           </div>
           <NavButton
             label={"Home"}
@@ -94,9 +92,9 @@ export function NavBar({ showNav, setShowNav }) {
           to={"/contact-us"}
         ></NavButton> */}
         </div>
-         <div className="opacity-30 w-full text-xs ml-9 mt-12 mb-1 flex gap-4 items-center">
+         <div className="opacity-30 text-xs ml-9 mt-16 mb-3 flex gap-4 items-center pr-20 w-full">
             <p>General</p>
-            <div className="w-[40%] bg-neutral-400 h-[1px]"></div>
+            <div className="w-[30%] bg-neutral-400 h-[1px]"></div>
           </div>
         <button
           className="  text-blue-500 flex gap-2 items-center pl-9 mt-4 text-sm"
@@ -122,10 +120,10 @@ export function NavBar({ showNav, setShowNav }) {
 
     const color = isActive
       ? "text-blue-500 opacity-100"
-      : "text-black opacity-40";
+      : "text-black opacity-20";
     const borderColor = isActive ? "bg-blue-500 " : "bg-transparent";
     const textOpacity = isActive ? "opacity-100" : "opacity-50";
-    const bg = isActive ? "bg-[rgb(200,200,200,0.4)]" : "";
+    const bg = isActive ? "bg-white" : "";
 
     return (
       <Link
@@ -133,7 +131,7 @@ export function NavBar({ showNav, setShowNav }) {
         onClick={() => {
           setShowNav(false);
         }}
-        className={`gap-4 w-full hover:bg-neutral-200 ${bg} text-black md:py-4 py-3 rounded-xl flex items-center justify-start`}
+        className={`gap-4 w-full hover:bg-white ${bg} text-black md:py-4 py-3 rounded-2xl flex items-center justify-start`}
       >
         <div className={`mr-3 ${borderColor} h-7 w-2 rounded-lg`}></div>
         <div className="flex gap-4 items-center justify-start">

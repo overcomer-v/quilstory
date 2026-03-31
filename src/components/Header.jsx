@@ -64,7 +64,7 @@ export function Header({ setShowNav, searchMode }) {
 
     const navigate = useNavigate();
 
-    return <header className={`flex sticky top-0 justify-between shadow-sm px-4 rounded-lg items-center gap-6 pb-4 pt-4 w-full bg-main z-[1000] searchMode ${searchMode? `hidden`:""}`}>
+    return <header className={`flex sticky top-0 justify-between shadow-sm px-4 rounded-lg items-center gap-6 pb-4 pt-4 w-full z-[1000] searchMode ${searchMode? `hidden`:""}`}>
       {/* <div className="text-xl font-bold opacity-70">{getCurrentNav()}</div> */}
        <div onClick={()=>{
         navigate("/search-page");
